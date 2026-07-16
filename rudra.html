@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রফেশনাল এডমিন পোর্টাল</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Variables - থিমের রং */
+        :root {
+            --bg-color: #f4f7fa;
+            --text-color: #333;
+            --sidebar-bg: #1e293b;
+            --card-bg: white;
+            --topbar-bg: white;
+            --border-color: #e2e8f0;
+            --heading-color: #0f172a;
+            --table-text: #475569;
+        }
+        [data-theme="dark"] {
+            --bg-color: #0f172a; --text-color: #cbd5e1; --sidebar-bg: #020617;
+            --card-bg: #1e293b; --topbar-bg: #1e293b; --border-color: #334155;
+            --heading-color: #f8fafc; --table-text: #94a3b8;
+        }
+        [data-theme="blue"] {
+            --bg-color: #e0f2fe; --text-color: #0c4a6e; --sidebar-bg: #0369a1;
+            --card-bg: #ffffff; --topbar-bg: #bae6fd; --border-color: #7dd3fc;
+            --heading-color: #082f49; --table-text: #0284c7;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans Bengali', sans-serif; }
+        body { overflow: hidden; background-color: var(--bg-color); color: var(--text-color); transition: background-color 0.4s ease; }
+        
+        .page-container { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; display: none; opacity: 0; transition: opacity 0.5s ease; }
+        .page-container.active { display: block; opacity: 1; }
+
+        /* ল্যান্ডিং পেজ */
+        #landing {
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white;
+        }
+        .login-box {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); padding: 50px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); width: 450px;
+        }
+        .login-box h1 { font-size: 32px; margin-bottom: 10px; color: #fff; }
+        .login-box p { color: #cbd5e1; margin-bottom: 25px; font-size: 15px; }
+        .login-input {
+            width: 100%; padding: 15px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.2); color: white; border-radius: 8px; font-size: 16px; text-align: center; outline: none; transition: 0.3s;
+        }
+        .login-input::placeholder { color: #94a3b8; }
+        .btn-enter { background: #3b82f6; color: white; border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.3s; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-enter:hover { background: #2563eb; transform: translateY(-2px); }
+
+        /* প্রিলোডার */
+        #loader { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background: #0f172a; z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; }
+        .spinner { width: 50px; height: 50px; border: 5px solid #3b82f6; border-top: 5px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* ড্যাশবোর্ড সাইডবার */
+        .dashboard-wrapper { display: flex; width: 100%; height: 100vh; }
+        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; display: flex; flex-direction: column; transition: 0.4s; z-index: 100; }
+        .sidebar-header { padding: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 20px; font-weight: bold; color: #f8fafc; }
+        .sidebar-menu { padding: 20px 0; flex: 1; }
+        .menu-item { padding: 15px 25px; display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; transition: 0.2s; font-size: 16px; border-left: 4px solid transparent; }
+        .menu-item:hover, .menu-item.active { background: rgba(0,0,0,0.2); color: #3b82f6; border-left-color: #3b82f6; }
+        .menu-item i { width: 20px; text-align: center; font-size: 18px; }
+
+        /* মেইন প্যানেল ও টপবার */
+        .main-panel { flex: 1; display: flex; flex-direction: column; }
+        .topbar { height: 70px; background: var(--topbar-bg); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--border-color); transition: 0.4s; }
+        
+        /* সার্চ বার ডিজাইন */
+        .search-bar { background: var(--bg-color); padding: 10px 20px; border-radius: 20px; display: flex; align-items: center; gap: 10px; width: 350px; border: 1px solid var(--border-color); }
+        .search-bar input { border: none; background: transparent; outline: none; width: 100%; font-size: 14px; color: var(--text-color); }
+        
+        .user-profile { display: flex; align-items: center; gap: 15px; }
+        .user-profile img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #3b82f6; }
+        .user-info h4 { font-size: 14px; color: var(--heading-color); }
+
+        .content-area { flex: 1; padding: 30px; overflow-y: auto; }
+        .panel-section { display: none; animation: fadeIn 0.4s; }
+        .panel-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* কার্ড, টেবিল ও বাটন */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: var(--card-bg); padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px; border: 1px solid var(--border-color); transition: 0.4s; }
+        .stat-details h3 { font-size: 24px; color: var(--heading-color); margin-bottom: 5px; }
+        .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 20px; }
+        
+        .table-container { background: var(--card-bg); border-radius: 12px; padding: 25px; border: 1px solid var(--border-color); transition: 0.4s; }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .table-header h2 { font-size: 18px; color: var(--heading-color); }
+        .btn-sm { background: #3b82f6; color: white; padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; transition: 0.3s; }
+        .btn-delete { background: #fee2e2; color: #ef4444; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; background: rgba(0,0,0,0.02); color: var(--heading-color); border-bottom: 2px solid var(--border-color); }
+        td { padding: 15px; border-bottom: 1px solid var(--border-color); color: var(--table-text); font-size: 14px; }
+        tr:hover { background: rgba(0,0,0,0.02); }
+
+        /* সেটিংস থিম কার্ড */
+        .theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .theme-card { background: var(--card-bg); border: 2px solid var(--border-color); padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .theme-card:hover { border-color: #3b82f6; transform: translateY(-5px); }
+        .theme-card i { font-size: 40px; margin-bottom: 15px; }
+        .theme-card h3 { color: var(--heading-color); }
+        
+        /* আন্ডার কন্সট্রাকশন মেসেজ */
+        .construction-box { background: var(--card-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; margin-top: 20px; }
+        .construction-box i { font-size: 50px; color: #94a3b8; margin-bottom: 20px; }
+        .construction-box h2 { color: var(--heading-color); margin-bottom: 10px; }
+
+    </style>
+</head>
+<body>
+
+    <div id="loader"><div class="spinner"></div><h2>সিস্টেম চেক করা হচ্ছে...</h2></div>
+
+    <!-- ল্যান্ডিং পেজ (লগইন) -->
+    <div id="landing" class="page-container active">
+        <div class="login-box">
+            <i class="fa-solid fa-lock" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
+            <h1>এডমিন লগইন</h1>
+            <p>নিরাপদ পোর্টালে প্রবেশ করতে আপনার এডমিন নম্বর দিন</p>
+            <input type="password" id="adminPassword" class="login-input" placeholder="এডমিন আইডি বা নম্বর দিন">
+            <button class="btn-enter" onclick="startLogin()"><i class="fa-solid fa-right-to-bracket"></i> পোর্টালে প্রবেশ করুন</button>
+        </div>
+    </div>
+
+    <!-- মূল ড্যাশবোর্ড -->
+    <div id="dashboard" class="page-container">
+        <div class="dashboard-wrapper">
+            
+            <!-- সাইডবার মেনু -->
+            <div class="sidebar">
+                <div class="sidebar-header"><i class="fa-solid fa-shield-halved"></i> এডমিন পোর্টাল</div>
+                <div class="sidebar-menu">
+                    <div class="menu-item active" id="menu-overview" onclick="switchPanel('overviewPanel', 'menu-overview')"><i class="fa-solid fa-chart-pie"></i> ওভারভিউ</div>
+                    <div class="menu-item" id="menu-students" onclick="switchPanel('studentsPanel', 'menu-students')"><i class="fa-solid fa-users"></i> ছাত্রছাত্রী ডেটাবেস</div>
+                    <div class="menu-item" id="menu-teachers" onclick="switchPanel('teachersPanel', 'menu-teachers')"><i class="fa-solid fa-chalkboard-user"></i> শিক্ষক মণ্ডলী</div>
+                    <div class="menu-item" id="menu-fees" onclick="switchPanel('feesPanel', 'menu-fees')"><i class="fa-solid fa-file-invoice"></i> ফিজ ও পেমেন্ট</div>
+                    <div class="menu-item" id="menu-settings" onclick="switchPanel('settingsPanel', 'menu-settings')"><i class="fa-solid fa-gear"></i> সেটিংস (থিম)</div>
+                </div>
+                <div class="menu-item" onclick="logout()" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: auto; color: #ef4444;">
+                    <i class="fa-solid fa-power-off"></i> লগ আউট
+                </div>
+            </div>
+
+            <div class="main-panel">
+                <div class="topbar">
+                    <h3 style="color: var(--heading-color); margin-right: auto;">কোটালপুর মধুসূদন হাই স্কুল</h3>
+                    
+                    <!-- স্মার্ট সার্চ বার -->
+                    <div class="search-bar" style="margin-right: 30px;">
+                        <i class="fa-solid fa-magnifying-glass" style="color: #94a3b8;"></i>
+                        <input type="text" id="searchInput" onkeyup="searchStudent()" placeholder="স্টুডেন্ট আইডি বা নাম খুঁজুন...">
+                    </div>
+
+                    <div class="user-profile">
+                        <div class="user-info"><h4>রুদ্র সর্দার</h4></div>
+                        <img src="https://ui-avatars.com/api/?name=Rudra+Sardar&background=3b82f6&color=fff" alt="Admin">
+                    </div>
+                </div>
+
+                <div class="content-area">
+                    
+                    <!-- প্যানেল ১: ওভারভিউ -->
+                    <div id="overviewPanel" class="panel-section active">
+                        <h2 style="margin-bottom: 25px; color: var(--heading-color); font-size: 24px;">ড্যাশবোর্ড ওভারভিউ</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon" style="background: #eff6ff; color: #3b82f6;"><i class="fa-solid fa-user-graduate"></i></div>
+                                <div class="stat-details"><h3>১,২৪০</h3><p style="color: var(--table-text);">মোট ছাত্রছাত্রী</p></div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon" style="background: #f0fdf4; color: #22c55e;"><i class="fa-solid fa-check-to-slot"></i></div>
+                                <div class="stat-details"><h3>৯২%</h3><p style="color: var(--table-text);">আজকের উপস্থিতি</p></div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                                <div class="stat-details"><h3>৳ ২৫,৪০০</h3><p style="color: var(--table-text);">আজকের কালেকশন</p></div>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h2>সাম্প্রতিক ভর্তি তালিকা</h2>
+                                <button class="btn-sm" onclick="openModal()"><i class="fa-solid fa-plus"></i> নতুন স্টুডেন্ট</button>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr><th>রোল নং</th><th>ছাত্র/ছাত্রীর নাম</th><th>শ্রেণি / বিভাগ</th><th>অ্যাকশন</th></tr>
+                                </thead>
+                                <tbody id="studentTableBody">
+                                    <tr><td>#ST-2026-01</td><td>অয়ন মুখার্জী</td><td>একাদশ (বিজ্ঞান)</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td>#ST-2026-02</td><td>শ্রেয়া দাস</td><td>একাদশ (কলা)</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- প্যানেল ২: ছাত্রছাত্রী ডেটাবেস (১২৪০ জনের লিস্ট) -->
+                    <div id="studentsPanel" class="panel-section">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2 style="color: var(--heading-color); font-size: 24px;">ছাত্রছাত্রী ডেটাবেস (২০২৬ সেশন)</h2>
+                            <span style="background: #22c55e; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px;">মোট ছাত্রছাত্রী: ১,২৪০ জন</span>
+                        </div>
+                        
+                        <div class="table-container" style="height: calc(100vh - 270px); overflow-y: auto; padding: 0;">
+                            <!-- এখানে ID যোগ করা হয়েছে যাতে এক্সেল বুঝতে পারে কোন টেবিলটা ডাউনলোড হবে -->
+                            <table id="studentDataTable" style="width: 100%;">
+                                <thead style="position: sticky; top: 0; background: var(--card-bg); box-shadow: 0 2px 4px rgba(0,0,0,0.05); z-index: 10;">
+                                    <tr>
+                                        <th style="padding: 15px;">রোল নং</th>
+                                        <th style="padding: 15px;">ছাত্র/ছাত্রীর নাম</th>
+                                        <th style="padding: 15px;">লিঙ্গ</th>
+                                        <th style="padding: 15px;">বয়স</th>
+                                        <th style="padding: 15px;">শ্রেণি ও বিভাগ</th>
+                                        <th style="padding: 15px;">অভিভাবকের নম্বর</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fullStudentDatabase">
+                                    <!-- জাভাস্ক্রিপ্ট নামগুলো এখানে বসাবে -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div style="padding: 15px; text-align: center; color: var(--table-text); background: var(--card-bg); border-top: 1px solid var(--border-color); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                            <span>দেখাচ্ছে ১ থেকে ১,২৪০ জন (সম্পূর্ণ ডেটাবেস)</span>
+                            <div>
+                                <!-- এক্সেল ডাউনলোড বাটন -->
+                                <button class="btn-sm" style="background: #16a34a;" onclick="exportTableToExcel('studentDataTable', 'School_Students_Data')">
+                                    <i class="fa-solid fa-file-excel"></i> এক্সেলে ডাউনলোড করুন
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- প্যানেল ৩: শিক্ষক মণ্ডলী ও স্টাফ -->
+                    <div id="teachersPanel" class="panel-section">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2 style="color: var(--heading-color); font-size: 24px;">শিক্ষক মণ্ডলী ও স্টাফ তালিকা</h2>
+                            <span style="background: #3b82f6; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px;">মোট স্টাফ: ৪০ জন</span>
+                        </div>
+                        
+                        <div class="table-container" style="height: calc(100vh - 200px); overflow-y: auto; padding: 0;">
+                            <table style="width: 100%;">
+                                <thead style="position: sticky; top: 0; background: var(--card-bg); box-shadow: 0 2px 4px rgba(0,0,0,0.05); z-index: 10;">
+                                    <tr>
+                                        <th style="padding: 15px;">ক্রমিক নং</th>
+                                        <th style="padding: 15px;">নাম</th>
+                                        <th style="padding: 15px;">লিঙ্গ</th>
+                                        <th style="padding: 15px;">বয়স</th>
+                                        <th style="padding: 15px;">বিষয় / পদ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>১</td><td>সুব্রত বিশ্বাস</td><td>পুরুষ</td><td>৫৮</td><td style="font-weight: bold; color: #3b82f6;">প্রধান শিক্ষক</td></tr>
+                                    <tr><td>২</td><td>সুমিত ব্যানার্জী</td><td>পুরুষ</td><td>৪৫</td><td>ইতিহাস</td></tr>
+                                    <tr><td>৩</td><td>অনিতা সেন</td><td>মহিলা</td><td>৩৮</td><td>ভূগোল</td></tr>
+                                    <tr><td>৪</td><td>রাহুল চ্যাটার্জী</td><td>পুরুষ</td><td>৪২</td><td>শিক্ষাবিজ্ঞান</td></tr>
+                                    <tr><td>৫</td><td>প্রিয়াঙ্কা দাস</td><td>মহিলা</td><td>৩৫</td><td>রাষ্ট্রবিজ্ঞান</td></tr>
+                                    <tr><td>৬</td><td>অরিন্দম ঘোষ</td><td>পুরুষ</td><td>৫০</td><td>বাংলা</td></tr>
+                                    <tr><td>৭</td><td>সুজাতা মিত্র</td><td>মহিলা</td><td>২৯</td><td>ইংরেজি</td></tr>
+                                    <tr><td>৮</td><td>বিকাশ রায়</td><td>পুরুষ</td><td>৪৮</td><td>গণিত</td></tr>
+                                    <tr><td>৯</td><td>নূপুর বসু</td><td>মহিলা</td><td>৩১</td><td>ভৌতবিজ্ঞান</td></tr>
+                                    <tr><td>১০</td><td>রতন হালদার</td><td>পুরুষ</td><td>৫৫</td><td>জীবনবিজ্ঞান</td></tr>
+                                    
+                                    <tr><td>১১</td><td>সমীর দাস</td><td>পুরুষ</td><td>৩৬</td><td>ইতিহাস</td></tr>
+                                    <tr><td>১২</td><td>বর্ণালী দত্ত</td><td>মহিলা</td><td>৪১</td><td>ভূগোল</td></tr>
+                                    <tr><td>১৩</td><td>তপন কুমার পাল</td><td>পুরুষ</td><td>৫২</td><td>সংস্কৃত</td></tr>
+                                    <tr><td>১৪</td><td>শ্রেয়া মুখার্জী</td><td>মহিলা</td><td>২৮</td><td>শিক্ষাবিজ্ঞান</td></tr>
+                                    <tr><td>১৫</td><td>কাঞ্চন মল্লিক</td><td>পুরুষ</td><td>৩৪</td><td>রাষ্ট্রবিজ্ঞান</td></tr>
+                                    <tr><td>১৬</td><td>রিয়া সাহা</td><td>মহিলা</td><td>৩০</td><td>দর্শন (Philosophy)</td></tr>
+                                    <tr><td>১৭</td><td>অয়ন চক্রবর্তী</td><td>পুরুষ</td><td>৪৪</td><td>শারীরিক শিক্ষা (Sports)</td></tr>
+                                    <tr><td>১৮</td><td>রেশমি কর</td><td>মহিলা</td><td>৩৭</td><td>কম্পিউটার অ্যাপ্লিকেশন</td></tr>
+                                    <tr><td>১৯</td><td>মৌমিতা পাল</td><td>মহিলা</td><td>৩২</td><td>বাংলা</td></tr>
+                                    <tr><td>২০</td><td>দীপক কর্মকার</td><td>পুরুষ</td><td>৪৬</td><td>ইংরেজি</td></tr>
+                                    
+                                    <tr><td>২১</td><td>অরুন্ধতী রায়</td><td>মহিলা</td><td>৫১</td><td>গণিত</td></tr>
+                                    <tr><td>২২</td><td>প্রদীপ গুহ</td><td>পুরুষ</td><td>৩৯</td><td>অর্থনীতি (Economics)</td></tr>
+                                    <tr><td>২৩</td><td>নীলাঞ্জনা সেন</td><td>মহিলা</td><td>৪৩</td><td>পরিবেশ বিদ্যা</td></tr>
+                                    <tr><td>২৪</td><td>সুকান্ত ভট্টাচার্য</td><td>পুরুষ</td><td>২৭</td><td>ইতিহাস</td></tr>
+                                    <tr><td>২৫</td><td>অন্বেষা মিশ্র</td><td>মহিলা</td><td>৩৩</td><td>ভূগোল</td></tr>
+                                    <tr><td>২৬</td><td>কুণাল দেবনাথ</td><td>পুরুষ</td><td>৪৭</td><td>হিসাববিজ্ঞান (Commerce)</td></tr>
+                                    <tr><td>২৭</td><td>তানিয়া ঘোষ</td><td>মহিলা</td><td>২৬</td><td>শিক্ষাবিজ্ঞান</td></tr>
+                                    <tr><td>২৮</td><td>মানব সরকার</td><td>পুরুষ</td><td>৫৩</td><td>রাষ্ট্রবিজ্ঞান</td></tr>
+                                    <tr><td>২৯</td><td>রিমি দাস</td><td>মহিলা</td><td>৩১</td><td>বাংলা</td></tr>
+                                    <tr><td>৩০</td><td>জয়ন্ত বোস</td><td>পুরুষ</td><td>৪৯</td><td>ইংরেজি</td></tr>
+                                    
+                                    <tr><td>৩১</td><td>স্বাতী চ্যাটার্জী</td><td>মহিলা</td><td>৩৫</td><td>গণিত</td></tr>
+                                    <tr><td>৩২</td><td>কৌশিক সেন</td><td>পুরুষ</td><td>৩৮</td><td>ভৌতবিজ্ঞান</td></tr>
+                                    <tr><td>৩৩</td><td>তৃণা দাস</td><td>মহিলা</td><td>৪২</td><td>জীবনবিজ্ঞান</td></tr>
+                                    <tr><td>৩৪</td><td>অমিত কুমার</td><td>পুরুষ</td><td>৫৪</td><td>লাইব্রেরিয়ান</td></tr>
+                                    <tr><td>৩৫</td><td>শঙ্কর শীল</td><td>পুরুষ</td><td>৪৫</td><td>হেড ক্লার্ক</td></tr>
+                                    <tr><td>৩৬</td><td>নবনীতা গুহ</td><td>মহিলা</td><td>২৯</td><td>অফিস ক্লার্ক</td></tr>
+                                    <tr><td>৩৭</td><td>মাধব দাস</td><td>পুরুষ</td><td>৩৬</td><td>ল্যাব অ্যাসিস্ট্যান্ট</td></tr>
+                                    <tr><td>৩৮</td><td>কবিতা রায়</td><td>মহিলা</td><td>৫০</td><td>গ্রুপ-ডি স্টাফ</td></tr>
+                                    <tr><td>৩৯</td><td>সঞ্জয় বাগদী</td><td>পুরুষ</td><td>৪২</td><td>গ্রুপ-ডি স্টাফ</td></tr>
+                                    <tr><td>৪০</td><td>রঞ্জিত বাউড়ি</td><td>পুরুষ</td><td>৪১</td><td>নিরাপত্তা রক্ষী (Security)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- প্যানেল ৪: ফিজ ও পেমেন্ট -->
+                    <div id="feesPanel" class="panel-section">
+                        <h2 style="color: var(--heading-color); font-size: 24px;">ফিজ ও পেমেন্ট হিস্ট্রি</h2>
+                        <div class="construction-box">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                            <h2>পেমেন্ট গেটওয়ে</h2>
+                            <p style="color: var(--table-text);">অনলাইন ফি কালেকশন সিস্টেম ডেভেলপমেন্টের অধীনে আছে।</p>
+                        </div>
+                    </div>
+
+                    <!-- প্যানেল ৫: সেটিংস ও থিম -->
+                    <div id="settingsPanel" class="panel-section">
+                        <h2 style="margin-bottom: 10px; color: var(--heading-color); font-size: 24px;"><i class="fa-solid fa-palette"></i> সিস্টেম থিম সেটিংস</h2>
+                        <p style="color: var(--table-text); margin-bottom: 30px;">আপনার পছন্দ অনুযায়ী ওয়েবসাইটের লুক পরিবর্তন করুন।</p>
+                        <div class="theme-grid">
+                            <div class="theme-card" onclick="changeTheme('light')"><i class="fa-regular fa-sun" style="color: #f59e0b;"></i><h3>লাইট মোড</h3></div>
+                            <div class="theme-card" onclick="changeTheme('dark')"><i class="fa-solid fa-moon" style="color: #6366f1;"></i><h3>ডার্ক মোড</h3></div>
+                            <div class="theme-card" onclick="changeTheme('blue')"><i class="fa-solid fa-droplet" style="color: #0ea5e9;"></i><h3>স্কাই ব্লু মোড</h3></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- নতুন স্টুডেন্ট যোগ করার ফর্ম -->
+    <div id="studentModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background: var(--card-bg); padding: 30px; border-radius: 15px; width: 500px; position: relative;">
+            <i class="fa-solid fa-xmark" onclick="closeModal()" style="position: absolute; top: 20px; right: 20px; font-size: 20px; cursor: pointer; color: var(--table-text);"></i>
+            <h2 style="margin-bottom: 20px; color: var(--heading-color);"><i class="fa-solid fa-user-plus" style="color: #3b82f6;"></i> নতুন স্টুডেন্ট ফর্ম</h2>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px; font-size: 14px; color: var(--heading-color); font-weight: bold;">সম্পূর্ণ নাম</label>
+                <input type="text" id="studentName" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); border-radius: 6px; outline: none;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px; font-size: 14px; color: var(--heading-color); font-weight: bold;">বিভাগ / সাবজেক্ট</label>
+                <select id="studentSubject" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); border-radius: 6px; outline: none;">
+                    <option value="ইতিহাস ও ভূগোল">ইতিহাস ও ভূগোল</option>
+                    <option value="বিজ্ঞান বিভাগ (Science)">বিজ্ঞান বিভাগ (Science)</option>
+                    <option value="বাণিজ্য বিভাগ (Commerce)">বাণিজ্য বিভাগ (Commerce)</option>
+                </select>
+            </div>
+            <button onclick="saveStudent()" style="background: #3b82f6; color: white; width: 100%; padding: 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px;">ডেটা সেভ করুন</button>
+        </div>
+    </div>
+
+    <!-- জাভাস্ক্রিপ্ট কন্ট্রোল -->
+    <script>
+        // ১২৪০ জন ছাত্রছাত্রীর ডেটাবেস তৈরি করার লুপ
+        window.onload = function() {
+            const firstNamesM = ["অয়ন", "রাহুল", "সায়ন", "বিকাশ", "কৌশিক", "সুমন", "দেবরাজ", "রোহিত", "মনোজ", "আরিফ", "সৌরভ", "বিশাল", "অক্ষয়", "শুভম", "তনয়", "প্রতীক", "গৌরব", "রণিত", "বিক্রম", "ইমরান", "সুকান্ত", "দীপঙ্কর", "মন্টু", "সাগর", "অমিত", "সমীর", "অরিন্দম"];
+            const firstNamesF = ["শ্রেয়া", "রিতিকা", "অদিতি", "সুস্মিতা", "নবনীতা", "পূজা", "অঞ্জলি", "সুনীতা", "রেশমি", "দিশা", "রিয়া", "নেহা", "ইশিতা", "বৃষ্টি", "সঞ্জনা", "পাপিয়া", "শ্রেয়সী", "জলি", "ফারহানা", "লিপি", "রীতা", "অনিমা", "প্রিয়া", "তানিয়া", "স্বাতী"];
+            const lastNamesList = ["মুখার্জী", "দাস", "সেন", "বোস", "কর্মকার", "মিশ্র", "পাত্র", "রায়", "সাহা", "হালদার", "ঘোষ", "চক্রবর্তী", "মল্লিক", "পাসোয়ান", "বিশ্বাস", "বাউড়ি", "প্রামাণিক", "খাতুন", "সেখ", "সেনগুপ্ত", "পাল", "মন্ডল", "গুপ্তা", "শর্মা", "সিং", "গুহ", "মিত্র", "দে", "সরকার", "আলী", "সর্দার"];
+            const sectionList = ["একাদশ (বিজ্ঞান)", "একাদশ (কলা)", "একাদশ (বাণিজ্য)", "দ্বাদশ (বিজ্ঞান)", "দ্বাদশ (কলা)", "দ্বাদশ (বাণিজ্য)"];
+
+            let allStudentsHTML = '';
+            for(let i=1; i<=1240; i++) {
+                let isMale = Math.random() > 0.5;
+                let fName = isMale ? firstNamesM[Math.floor(Math.random() * firstNamesM.length)] : firstNamesF[Math.floor(Math.random() * firstNamesF.length)];
+                let lName = lastNamesList[Math.floor(Math.random() * lastNamesList.length)];
+                let fullName = fName + " " + lName;
+                let gender = isMale ? "ছেলে" : "মেয়ে";
+                let age = Math.floor(Math.random() * 3) + 16; 
+                let section = sectionList[Math.floor(Math.random() * sectionList.length)];
+                let rollStr = i.toString().padStart(4, '0');
+                let phone = "৯" + Math.floor(Math.random() * 900000000 + 100000000);
+
+                allStudentsHTML += `<tr><td>#ST-2026-${rollStr}</td><td>${fullName}</td><td>${gender}</td><td>${age}</td><td>${section}</td><td>${phone}</td></tr>`;
+            }
+            document.getElementById('fullStudentDatabase').innerHTML = allStudentsHTML;
+        };
+
+        // এক্সেল ফাইলে ডাউনলোড করার ফাংশন
+        function exportTableToExcel(tableID, filename = ''){
+            var downloadLink;
+            var dataType = 'application/vnd.ms-excel';
+            var tableSelect = document.getElementById(tableID);
+            var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+            
+            filename = filename ? filename + '.xls' : 'excel_data.xls';
+            downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+            
+            if(navigator.msSaveOrOpenBlob){
+                var blob = new Blob(['\ufeff', tableHTML], { type: dataType });
+                navigator.msSaveOrOpenBlob( blob, filename);
+            } else {
+                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+                downloadLink.download = filename;
+                downloadLink.click();
+            }
+        }
+
+        // স্মার্ট সার্চ ফাংশন
+        function searchStudent() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let table = document.getElementById('fullStudentDatabase');
+            let rows = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                let roll = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
+                let name = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+                if (name.includes(input) || roll.includes(input)) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+
+        // লগইন (পাসওয়ার্ড: 9163966795)
+        function startLogin() {
+            let pass = document.getElementById('adminPassword').value;
+            if (pass === "9163966795") {
+                document.getElementById('loader').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('landing').classList.remove('active');
+                    document.getElementById('dashboard').classList.add('active');
+                    document.getElementById('adminPassword').value = "";
+                }, 1500);
+            } else {
+                alert("ভুল এডমিন আইডি! দয়া করে সঠিক নম্বরটি দিন।");
+            }
+        }
+
+        function logout() {
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('landing').classList.add('active');
+            switchPanel('overviewPanel', 'menu-overview');
+        }
+
+        // পেজ পরিবর্তন
+        function switchPanel(panelId, menuId) {
+            document.querySelectorAll('.panel-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(panelId).classList.add('active');
+            document.getElementById(menuId).classList.add('active');
+        }
+
+        function changeTheme(themeName) {
+            document.body.setAttribute('data-theme', themeName);
+        }
+
+        function openModal() { document.getElementById('studentModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('studentModal').style.display = 'none'; }
+        
+        function saveStudent() {
+            let name = document.getElementById('studentName').value;
+            let subject = document.getElementById('studentSubject').value;
+            if (name.trim() === "") { alert("দয়া করে স্টুডেন্টের নাম লিখুন!"); return; }
+
+            let table = document.getElementById('studentTableBody');
+            let newRow = table.insertRow(0);
+            newRow.innerHTML = `<td>#ST-2026-NEW</td><td>${name}</td><td>${subject}</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td>`;
+            
+            document.getElementById('studentName').value = "";
+            closeModal();
+        }
+
+        function deleteStudent(button) {
+            if (confirm("আপনি কি সত্যিই এই ডেটা ডিলিট করতে চান?")) {
+                let row = button.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+            }
+        }
+    </script>
+
+</body>
+</html>
