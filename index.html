@@ -26,7 +26,8 @@
       background: #ff00ff;
       box-shadow: 0 0 15px #ff00ff;
     }
-        /* হ্যাকার গ্লিচ হোভার ইফেক্ট */
+
+    /* হ্যাকার গ্লিচ হোভার ইফেক্ট */
     h1:hover, h2:hover, h3:hover {
       animation: glitchMove 0.2s cubic-bezier(.25, .46, .45, .94) both infinite;
       color: #00ffff;
@@ -42,7 +43,7 @@
       80% { transform: translate(2px, -2px) }
       100% { transform: translate(0) }
     }
-        
+    
         /* Loading Screen Design */
     #cyber-preloader {
       position: fixed;
@@ -272,7 +273,7 @@
       border: 1px solid #00ffff;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     }
-        /* ড্যাশবোর্ডের অন্ধকার লেখাগুলো উজ্জ্বল করার কোড */
+    /* ড্যাশবোর্ডের অন্ধকার লেখাগুলো উজ্জ্বল করার কোড */
     h1, h2, h3, h4, h5, h6 {
       color: #00ffff !important; /* লেখাকে উজ্জ্বল নিয়ন সায়ান রঙ করবে */
       text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
@@ -335,7 +336,7 @@
                     </div>
 
                     <div class="user-profile">
-                        <div class="user-info"><h4>রুদ্র সর্দার</h4></div>
+                        <div class="user-info"><h4>Rudra Sardar</h4></div>
                         <img src="https://ui-avatars.com/api/?name=Rudra+Sardar&background=3b82f6&color=fff" alt="Admin">
                     </div>
                 </div>
@@ -348,11 +349,11 @@
                         <div class="stats-grid">
                             <div class="stat-card">
                                 <div class="stat-icon" style="background: #eff6ff; color: #3b82f6;"><i class="fa-solid fa-user-graduate"></i></div>
-                                <div class="stat-details"><h3>১,২৪০</h3><p style="color: var(--table-text);">মোট ছাত্রছাত্রী</p></div>
+                                <div class="stat-details"><h3 id="main-student">০</h3><p style="color: var(--table-text);">মোট ছাত্রছাত্রী</p></div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-icon" style="background: #f0fdf4; color: #22c55e;"><i class="fa-solid fa-check-to-slot"></i></div>
-                                <div class="stat-details"><h3>৯২%</h3><p style="color: var(--table-text);">আজকের উপস্থিতি</p></div>
+                                <div class="stat-details"><h3><span id="attendance-counter">০%</span></h3><p style="color: var(--table-text);">আজকের উপস্থিতি</p></div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-icon" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-indian-rupee-sign"></i></div>
@@ -381,7 +382,7 @@
                     <div id="studentsPanel" class="panel-section">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                             <h2 style="color: var(--heading-color); font-size: 24px;">ছাত্রছাত্রী ডেটাবেস (২০২৬ সেশন)</h2>
-                            <span style="background: #22c55e; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px;">মোট ছাত্রছাত্রী: ১,২৪০ জন</span>
+                            <span style="background: #22c55e; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px;">মোট ছাত্রছাত্রী:<span id="dbcounter">০</span></span>
                         </div>
                         
                         <div class="table-container" style="height: calc(100vh - 270px); overflow-y: auto; padding: 0;">
@@ -594,21 +595,31 @@
         }
 
         // লগইন (পাসওয়ার্ড: 9163966795)
-        function startLogin() {
-            let pass = document.getElementById('adminPassword').value;
-            if (pass === "9163966795") {
-                document.getElementById('loader').style.display = 'flex';
-                setTimeout(() => {
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('landing').classList.remove('active');
-                    document.getElementById('dashboard').classList.add('active');
-                    document.getElementById('adminPassword').value = "";
-                }, 1500);
-            } else {
-                alert("ভুল এডমিন আইডি! দয়া করে সঠিক নম্বরটি দিন।");
-            }
-        }
-
+    function startLogin() {
+    let pass = document.getElementById("adminPassword").value;
+    if (pass === "9163966795") {
+        document.getElementById('loader').style.display = 'flex';
+        
+        setTimeout(() => {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('landing').classList.remove('active');
+            document.getElementById('dashboard').classList.add('active');
+            document.getElementById('adminPassword').value = "";
+            
+            // ড্যাশবোর্ড খোলার ঠিক সাথে সাথেই আলাদা আলাদা সময়ে অ্যানিমেশন শুরু হবে
+            setTimeout(() => {
+                animateCounter('main-student', 1240, false);
+            }, 100); 
+            
+            setTimeout(() => {
+                animateCounter('attendance-counter', 92, true);
+            }, 300);
+            
+        }, 1500);
+    } else {
+        alert("ভুল এডমিন আইডি! দয়া করে সঠিক নম্বরটি দিন।");
+    }
+}
         function logout() {
             document.getElementById('dashboard').classList.remove('active');
             document.getElementById('landing').classList.add('active');
@@ -650,6 +661,8 @@
                 row.parentNode.removeChild(row);
             }
         }
+    
+
     </script>
     <script>
     function updateCyberClock() {
@@ -670,15 +683,45 @@
       document.getElementById('cyber-date').innerText = now.toLocaleDateString('bn-IN', options);
     }
     
-    // প্রতি ১ সেকেন্ডে ঘড়ি আপডেট করার কমান্ড
-    setInterval(updateCyberClock, 1000);
-    updateCyberClock();
-    // Remove Preloader after 2.5 seconds
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        document.getElementById('cyber-preloader').style.display = 'none';
-      }, 2500); // ২৫০০ মানে ২.৫ সেকেন্ড
-    });
+  // Animated Number Counter (Bangla Support - Perfect Speed)
+function animateCounter(id, targetNum, isPercentage) {
+    let currentNum = 0;
+    // স্পিড একটু কমিয়ে দিলাম (১৫ এবং ৩০ মিলি-সেকেন্ড)
+    let speed = targetNum > 100 ? 15 : 30; 
+    let element = document.getElementById(id);
+    
+    let timer = setInterval(function() {
+        // লাফিয়ে বাড়ার পরিমাণটা ২৫ থেকে কমিয়ে ৭ করে দিলাম
+        currentNum += (targetNum > 100 ? 7 : 1); 
+        
+        if(currentNum >= targetNum) {
+            currentNum = targetNum;
+            clearInterval(timer);
+        }
+        
+        // ইংরেজি সংখ্যাকে বাংলায় বদলানোর স্পেশাল ট্রিক
+        let banglaDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+        let formattedNum = currentNum.toString().replace(/[0-9]/g, x => banglaDigits[x]);
+        
+        // ১,২৪০ এর ক্ষেত্রে কমা যোগ করা (১০০০ এর ওপরে গেলে)
+        if(targetNum === 1240 && currentNum >= 1000) {
+            formattedNum = "১," + formattedNum.substring(1);
+        }
+        
+        element.innerText = formattedNum + (isPercentage ? "%" : "");
+    }, speed);
+}
+
+   // লোডিং স্ক্রিন সরানোর কোড
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        let preloader = document.getElementById('cyber-preloader');
+        if (preloader) {
+            preloader.style.display = 'none';
+        }
+    }, 2500); // ২.5 সেকেন্ড পর লোডিং স্ক্রিন সরে যাবে
+});
+
 </script>
 
 </body>
