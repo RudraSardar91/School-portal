@@ -20,7 +20,48 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <style>
+    <style>.cyber-clock-wrapper {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9999;
+  background: rgba(9, 10, 15, 0.7);
+  backdrop-filter: blur(8px);
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), inset 0 0 15px rgba(0, 255, 255, 0.4);
+  border-radius: 12px;
+  padding: 15px 25px;
+  text-align: center;
+  animation: neonPulse 2s infinite alternate;
+  transform: scale(0.85);
+  transform-origin: bottom right;
+}
+         .cyber-time {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 40px;
+      font-weight: 900;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+      letter-spacing: 3px;
+    }
+
+    .cyber-date {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      color: #ff00ff;
+      text-shadow: 0 0 8px #ff00ff;
+      margin-top: 10px;
+      letter-spacing: 1px;
+    }
+
+    @keyframes neonPulse {
+      from {
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 255, 0.5);
+      }
+      to {
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), inset 0 0 30px rgba(0, 255, 255, 0.8);
+      }
+    }
         /* CSS Variables - থিমের রং */
         :root {
             --bg-color: #f4f7fa;
@@ -129,6 +170,10 @@
     </style>
 </head>
 <body>
+    <div class="cyber-clock-wrapper">
+  <div id="cyber-time" class="cyber-time"></div>
+  <div id="cyber-date" class="cyber-date"></div>
+</div>
 
     <div id="loader"><div class="spinner"></div><h2>সিস্টেম চেক করা হচ্ছে...</h2></div>
 
@@ -489,6 +534,29 @@
             }
         }
     </script>
+    <script>
+    function updateCyberClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      let seconds = now.getSeconds();
+      let ampm = hours >= 12 ? 'PM' : 'AM';
+
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+
+      document.getElementById('cyber-time').innerText = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+      
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('cyber-date').innerText = now.toLocaleDateString('bn-IN', options);
+    }
+    
+    // প্রতি ১ সেকেন্ডে ঘড়ি আপডেট করার কমান্ড
+    setInterval(updateCyberClock, 1000);
+    updateCyberClock();
+</script>
 
 </body>
 </html>
