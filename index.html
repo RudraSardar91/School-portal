@@ -20,7 +20,61 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <style>.cyber-clock-wrapper {
+    <style>
+        
+        /* Loading Screen Design */
+    #cyber-preloader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #090a0f;
+      z-index: 999999; /* সবার ওপরে রাখার জন্য */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loader-text {
+      color: #00ffff;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 5px;
+      margin-bottom: 20px;
+      animation: textBlink 1s infinite;
+    }
+
+    .loader-bar {
+      width: 300px;
+      height: 10px;
+      border: 2px solid #00ffff;
+      border-radius: 5px;
+      padding: 2px;
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    .loader-fill {
+      width: 0%;
+      height: 100%;
+      background: #ff00ff;
+      box-shadow: 0 0 10px #ff00ff;
+      animation: loadingBar 2.5s forwards;
+    }
+
+    @keyframes textBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    @keyframes loadingBar { 100% { width: 100%; } }
+
+    /* Button Hover Glow Effect */
+    button, input[type="button"], input[type="submit"], .btn {
+      transition: all 0.3s ease-in-out !important;
+    }
+    button:hover, input[type="button"]:hover, input[type="submit"]:hover, .btn:hover {
+      box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff !important;
+      transform: scale(1.05) !important;
+      cursor: pointer;
+    }
+        .cyber-clock-wrapper {
   position: fixed;
   bottom: 30px;
   right: 30px;
@@ -170,6 +224,11 @@
     </style>
 </head>
 <body>
+    <!-- Gaming Loading Screen -->
+    <div id="cyber-preloader">
+      <div class="loader-text">SYSTEM LOADING...</div>
+      <div class="loader-bar"><div class="loader-fill"></div></div>
+    </div>
     <div class="cyber-clock-wrapper">
   <div id="cyber-time" class="cyber-time"></div>
   <div id="cyber-date" class="cyber-date"></div>
@@ -556,6 +615,12 @@
     // প্রতি ১ সেকেন্ডে ঘড়ি আপডেট করার কমান্ড
     setInterval(updateCyberClock, 1000);
     updateCyberClock();
+        // Remove Preloader after 2.5 seconds
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.getElementById('cyber-preloader').style.display = 'none';
+      }, 2500); // ২৫০০ মানে ২.৫ সেকেন্ড
+    });
 </script>
 
 </body>
