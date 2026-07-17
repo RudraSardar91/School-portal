@@ -61,6 +61,21 @@
       box-shadow: 0 0 10px #ff00ff;
       animation: loadingBar 2.5s forwards;
     }
+        /* Neon Particle Background */
+    body {
+      background-color: #090a0f !important;
+      background-image: 
+        radial-gradient(#00ffff 1.5px, transparent 1.5px),
+        radial-gradient(#ff00ff 1.5px, transparent 1.5px);
+      background-size: 60px 60px;
+      background-position: 0 0, 30px 30px;
+      animation: matrixMove 15s linear infinite;
+      color: #cbd5e1; /* লেখার রঙ হালকা উজ্জ্বল করার জন্য */
+    }
+
+    @keyframes matrixMove {
+      100% { background-position: 600px 600px, 630px 630px; }
+    }
 
     @keyframes textBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     @keyframes loadingBar { 100% { width: 100%; } }
@@ -220,6 +235,22 @@
         .construction-box { background: var(--card-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; margin-top: 20px; }
         .construction-box i { font-size: 50px; color: #94a3b8; margin-bottom: 20px; }
         .construction-box h2 { color: var(--heading-color); margin-bottom: 10px; }
+
+    /* Table Row Hover Magic */
+    tbody tr:hover {
+      background-color: rgba(0, 255, 255, 0.1) !important;
+      box-shadow: inset 0 0 10px #00ffff;
+      transform: scale(1.01);
+      transition: all 0.3s ease;
+    }
+    
+    /* ড্যাশবোর্ডের কার্ডগুলোর ডিজাইন আপডেট */
+    .card {
+      background-color: rgba(30, 41, 59, 0.8) !important;
+      backdrop-filter: blur(5px);
+      border: 1px solid #00ffff;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
 
     </style>
 </head>
