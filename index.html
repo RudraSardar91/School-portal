@@ -278,8 +278,84 @@
       color: #00ffff !important; /* লেখাকে উজ্জ্বল নিয়ন সায়ান রঙ করবে */
       text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
     }
+   /* মারাত্মক এডভান্স HUD ঘড়ির ডিজাইন */
+.hud-clock-wrapper {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    /* কাচের মতো ব্যাকগ্রাউন্ড */
+    background: linear-gradient(135deg, rgba(10, 15, 25, 0.95) 0%, rgba(0, 40, 60, 0.8) 100%);
+    padding: 15px 20px;
+    /* এই লাইনটাই ম্যাজিক! কোণাগুলোকে সাই-ফাই স্টাইলে কেটে দেবে */
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+    border-left: 4px solid #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    z-index: 1000;
+    min-width: 260px;
+    backdrop-filter: blur(10px);
+    font-family: 'Courier New', monospace; /* হ্যাকার ফন্ট */
+}
+
+/* ওপরের ছোট লেখাগুলো */
+.hud-top-dec {
+    font-size: 11px;
+    color: #00ffff;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed rgba(0, 255, 255, 0.3);
+    padding-bottom: 5px;
+}
+.hud-dot {
+    height: 8px; width: 8px;
+    background: #ff0055;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 10px #ff0055;
+    animation: pulse 1s infinite;
+}
+.fast-ms { color: #ffcc00; font-weight: bold; }
+
+/* মেইন সময়ের স্টাইল */
+.hud-time-display {
+    font-size: 35px;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.4);
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+}
+.hud-sec-text { color: #00ffff; text-shadow: 0 0 15px #00ffff; }
+.hud-ampm-text { font-size: 14px; color: #ff0055; letter-spacing: 1px; margin-left: 8px; }
+.hud-blink { animation: blink 1s infinite; color: #444; }
+
+/* সেকেন্ডের প্রোগ্রেস বার */
+.hud-sec-track {
+    width: 100%; height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 12px 0 8px 0;
+    position: relative;
+}
+.hud-sec-fill {
+    height: 100%; width: 0%; /* এটা জাভাস্ক্রিপ্ট কন্ট্রোল করবে */
+    background: #00ffff;
+    box-shadow: 0 0 10px #00ffff;
+    transition: width 0.2s linear;
+}
+
+/* তারিখের স্টাইল */
+.hud-date-display { font-size: 13px; color: #88ccff; text-align: right; }
+
+/* অ্যানিমেশন */
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
 
     </style>
+
 </head>
 <body>
     <!-- Gaming Loading Screen -->
@@ -288,10 +364,7 @@
       <div class="loader-bar"><div class="loader-fill"></div></div>
     </div>
 
-    <div class="cyber-clock-wrapper">
-  <div id="cyber-time" class="cyber-time"></div>
-  <div id="cyber-date" class="cyber-date"></div>
-</div>
+  
 
     <div id="loader"><div class="spinner"></div><h2>সিস্টেম চেক করা হচ্ছে...</h2></div>
 
@@ -302,7 +375,7 @@
             <h1>এডমিন লগইন</h1>
             <p>নিরাপদ পোর্টালে প্রবেশ করতে আপনার এডমিন নম্বর দিন</p>
             <input type="password" id="adminPassword" class="login-input" placeholder="এডমিন আইডি বা নম্বর দিন">
-            <button class="btn-enter" onclick="startLogin()"><i class="fa-solid fa-right-to-bracket"></i> পোর্টালে প্রবেশ করুন</button>
+            <button class="btn-enter" onclick="startLogin()"><i class="fa-solid fa-right-to-bracket"></i> Enter</button>
         </div>
     </div>
 
@@ -642,18 +715,54 @@
         function openModal() { document.getElementById('studentModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('studentModal').style.display = 'none'; }
         
-        function saveStudent() {
-            let name = document.getElementById('studentName').value;
-            let subject = document.getElementById('studentSubject').value;
-            if (name.trim() === "") { alert("দয়া করে স্টুডেন্টের নাম লিখুন!"); return; }
+       function saveStudent() {
+    let name = document.getElementById('studentName').value;
+    let subject = document.getElementById('studentSubject').value;
+    if (name.trim() === "") { alert("দয়া করে স্টুডেন্টের নাম লিখুন!"); return; }
 
-            let table = document.getElementById('studentTableBody');
-            let newRow = table.insertRow(0);
-            newRow.innerHTML = `<td>#ST-2026-NEW</td><td>${name}</td><td>${subject}</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td>`;
-            
-            document.getElementById('studentName').value = "";
-            closeModal();
-        }
+    // ১. টেবিল আপডেট করা (তোমার আগের কোড)
+    let table = document.getElementById('studentTableBody');
+    let newRow = table.insertRow(0);
+    newRow.innerHTML = `<td>#ST-2026-NEW</td><td>${name}</td><td>${subject}</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td>`;
+
+    // ২. ডেটাবেসে (localStorage) সেভ করা (নতুন লজিক)
+    // ডায়েরি থেকে পুরনো ডেটা পড়ো, না থাকলে ফাঁকা লিস্ট [] নাও
+    let students = JSON.parse(localStorage.getItem("studentsDatabase")) || [];
+    
+    // নতুন স্টুডেন্টের একটা ডেটা প্যাকেট তৈরি করো
+    let newStudentData = {
+        studentName: name,
+        studentSubject: subject
+    };
+    
+    // লিস্টের একদম শুরুতে (unshift) নতুন স্টুডেন্টকে ঢোকাও
+    students.unshift(newStudentData);
+    
+    // এবার পুরো লিস্টটাকে স্ট্রিং (JSON.stringify) বানিয়ে ডায়েরিতে সেভ করে দাও
+    localStorage.setItem("studentsDatabase", JSON.stringify(students));
+
+    // ৩. কাজ শেষ, ফর্ম রিসেট করে দাও
+    document.getElementById('studentName').value = "";
+    closeModal();
+}
+
+// ২. পড়ার কাজ (Load Data): পেজ খুললে ডায়েরি থেকে ডেটা পড়ে টেবিলে বসানো
+function loadSavedStudents() {
+    // ডায়েরি থেকে ডেটা নাও, না থাকলে ফাঁকা লিস্ট
+    let students = JSON.parse(localStorage.getItem("studentsDatabase")) || [];
+    let table = document.getElementById('studentTableBody');
+    
+    // ডায়েরিতে থাকা প্রত্যেকটা নামের জন্য লুপ চালিয়ে একটা করে লাইন তৈরি করো
+    // (উল্টো করে পড়ছি যাতে সবথেকে নতুন নামটা টেবিলের একদম ওপরে থাকে)
+    students.slice().reverse().forEach(function(student) {
+        let newRow = table.insertRow(0);
+        newRow.innerHTML = `<td>#ST-2026-NEW</td><td>${student.studentName}</td><td>${student.studentSubject}</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td>`;
+    });
+}
+
+// ব্রাউজারকে নির্দেশ দেওয়া হলো: পেজ লোড হওয়ার সাথে সাথেই ডায়েরি পড়ার কাজটা শুরু করে দাও
+window.addEventListener('load', loadSavedStudents);
+
 
         function deleteStudent(button) {
             if (confirm("আপনি কি সত্যিই এই ডেটা ডিলিট করতে চান?")) {
@@ -665,24 +774,85 @@
 
     </script>
     <script>
-    function updateCyberClock() {
-      const now = new Date();
-      let hours = now.getHours();
-      let minutes = now.getMinutes();
-      let seconds = now.getSeconds();
-      let ampm = hours >= 12 ? 'PM' : 'AM';
 
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-      minutes = minutes < 10 ? '0' + minutes : minutes;
-      seconds = seconds < 10 ? '0' + seconds : seconds;
-
-      document.getElementById('cyber-time').innerText = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-      
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('cyber-date').innerText = now.toLocaleDateString('bn-IN', options);
-    }
+  // মারাত্মক এডভান্স ডুয়েল-কোর ইঞ্জিন (ভয়েস এআই সহ)
+function startHUDClock() {
+    let banglaDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
     
+    // নম্বরকে বাংলায় বদলানোর ফাংশন
+    function toBangla(num, pad = 2) {
+        return num.toString().padStart(pad, '0').replace(/[0-9]/g, x => banglaDigits[x]);
+    }
+
+    // কথা বলার AI ইঞ্জিন (Jarvis Voice)
+    function speakTime(text) {
+        let speech = new SpeechSynthesisUtterance();
+        speech.text = text;
+        speech.lang = 'bn-IN'; // বাংলা ভাষা
+        speech.rate = 0.9; // একটু ধীরেসুস্থে বলবে যাতে পরিষ্কার বোঝা যায়
+        window.speechSynthesis.speak(speech);
+    }
+
+    // ইঞ্জিন ১: রকেটের স্পিডে মিলি-সেকেন্ড (হ্যাকার ভাইব)
+    setInterval(() => {
+        let ms = new Date().getMilliseconds();
+        document.getElementById('hud-msec').innerText = toBangla(ms, 3);
+    }, 50);
+
+    // ইঞ্জিন ২: মেইন সময়, প্রোগ্রেস বার এবং এআই ভয়েস
+    setInterval(() => {
+        let now = new Date();
+        let h = now.getHours();
+        let m = now.getMinutes();
+        let s = now.getSeconds();
+        let ampm = h >= 12 ? 'PM' : 'AM';
+        
+        let hour12 = h % 12;
+        hour12 = hour12 ? hour12 : 12; // ০ বাজলে ১২ দেখাবে
+
+        // স্ক্রিনে সময় বসানো
+        document.getElementById('hud-hr').innerText = toBangla(hour12);
+        document.getElementById('hud-min').innerText = toBangla(m);
+        document.getElementById('hud-sec').innerText = toBangla(s);
+        document.getElementById('hud-ampm').innerText = ampm;
+
+        // প্রোগ্রেস বার
+        let secPercentage = (s / 59) * 100;
+        document.getElementById('hud-sec-fill').style.width = secPercentage + '%';
+
+        // তারিখ
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('hud-date').innerText = now.toLocaleDateString('bn-IN', options);
+
+        // ==========================================
+        // AI ভয়েস অ্যানাউন্সমেন্ট (রুদ্র স্যারের জন্য)
+        // ==========================================
+        // ঠিক শূন্য সেকেন্ডে মেশিন চেক করবে কটা বাজে
+        if (s === 0) {
+            let banglaTimes = {1: 'একটা', 2: 'দুটো', 3: 'তিনটে', 4: 'চারটে', 5: 'পাঁচটা', 6: 'ছটা', 7: 'সাতটা', 8: 'আটটা', 9: 'নটা', 10: 'দশটা', 11: 'এগারোটা', 12: 'বারোটা'};
+
+            if (m === 0) {
+                // যখন পুরো ঘন্টা বাজবে (যেমন: ৩:০০)
+                speakTime(`রুদ্র স্যার, এখন ঠিক ${banglaTimes[hour12]} বাজে।`);
+            } 
+            else if (m === 30) {
+                // যখন সাড়ে বাজবে (যেমন: ৩:৩০)
+                let halfText = "";
+                if (hour12 === 1) halfText = "দেড়টা";
+                else if (hour12 === 2) halfText = "আড়াইটে";
+                else halfText = `সাড়ে ${banglaTimes[hour12]}`;
+                
+                speakTime(`রুদ্র স্যার, এখন ${halfText} বাজে।`);
+            }
+        }
+
+    }, 1000);
+}
+
+// পেজ খুললেই ইঞ্জিন স্টার্ট!
+window.addEventListener('load', startHUDClock);
+
+
   // Animated Number Counter (Bangla Support - Perfect Speed)
 function animateCounter(id, targetNum, isPercentage) {
     let currentNum = 0;
@@ -719,10 +889,32 @@ window.addEventListener('load', function() {
         if (preloader) {
             preloader.style.display = 'none';
         }
-    }, 2500); // ২.5 সেকেন্ড পর লোডিং স্ক্রিন সরে যাবে
+    }, 2500); // 2.5 সেকেন্ড পর লোডিং স্ক্রিন সরে যাবে
 });
 
 </script>
+<!-- হাই-লেভেল সাইবারনেটিক HUD ঘড়ি -->
+<div class="hud-clock-wrapper">
+    <!-- ওপরের অংশ: সিস্টেম স্ট্যাটাস আর রকেটের মতো চলা মিলি-সেকেন্ড -->
+    <div class="hud-top-dec">
+        <div><span class="hud-dot"></span> SYSTEM.ONLINE</div>
+        <div class="hud-ms-container">MS: <span id="hud-msec" class="fast-ms">০০০</span></div>
+    </div>
+    
+    <!-- মাঝের অংশ: আসল সময় -->
+    <div class="hud-time-display">
+        <span id="hud-hr">০০</span><span class="hud-blink">:</span><span id="hud-min">০০</span><span class="hud-blink">:</span><span id="hud-sec" class="hud-sec-text">০০</span>
+        <span id="hud-ampm" class="hud-ampm-text">AM</span>
+    </div>
+    
+    <!-- প্রোগ্রেস বার: যেটা সেকেন্ডের সাথে সাথে এগোবে -->
+    <div class="hud-sec-track">
+        <div id="hud-sec-fill" class="hud-sec-fill"></div>
+    </div>
+    
+    <!-- নিচের অংশ: তারিখ -->
+    <div id="hud-date" class="hud-date-display">তারিখ লোড হচ্ছে...</div>
+</div>
 
 </body>
 </html>
