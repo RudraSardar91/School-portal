@@ -915,6 +915,19 @@ window.addEventListener('load', function() {
     <!-- নিচের অংশ: তারিখ -->
     <div id="hud-date" class="hud-date-display">তারিখ লোড হচ্ছে...</div>
 </div>
+<!-- সাউন্ড টেস্ট করার সিক্রেট বাটন -->
+<button onclick="testJarvis()" style="position: fixed; top: 20px; right: 20px; z-index: 99999; padding: 10px 15px; background: #00ffcc; color: black; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 0 10px #00ffcc;">
+    সাউন্ড টেস্ট
+</button>
 
+<script>
+function testJarvis() {
+    let speech = new SpeechSynthesisUtterance("রুদ্র স্যার, সিস্টেম একদম ঠিকঠাক কাজ করছে!");
+    speech.lang = 'bn-IN'; // বাংলা ভাষা
+    speech.rate = 0.9;
+    window.speechSynthesis.speak(speech);
+}
+</script>
+    
 </body>
 </html>
