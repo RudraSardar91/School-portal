@@ -111,48 +111,7 @@
       transform: scale(1.05) !important;
       cursor: pointer;
     }
-.cyber-clock-wrapper {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 9999;
-  background: rgba(9, 10, 15, 0.7);
-  backdrop-filter: blur(8px);
-  border: 2px solid #00ffff;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), inset 0 0 15px rgba(0, 255, 255, 0.4);
-  border-radius: 12px;
-  padding: 15px 25px;
-  text-align: center;
-  animation: neonPulse 2s infinite alternate;
-  transform: scale(0.85);
-  transform-origin: bottom right;
-}
-    .cyber-time {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 40px;
-      font-weight: 900;
-      color: #00ffff;
-      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-      letter-spacing: 3px;
-    }
 
-    .cyber-date {
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-      color: #ff00ff;
-      text-shadow: 0 0 8px #ff00ff;
-      margin-top: 10px;
-      letter-spacing: 1px;
-    }
-
-    @keyframes neonPulse {
-      from {
-        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 255, 0.5);
-      }
-      to {
-        box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), inset 0 0 30px rgba(0, 255, 255, 0.8);
-      }
-    }
         /* CSS Variables - থিমের রং */
         :root {
             --bg-color: #f4f7fa;
@@ -275,10 +234,10 @@
     }
     /* ড্যাশবোর্ডের অন্ধকার লেখাগুলো উজ্জ্বল করার কোড */
     h1, h2, h3, h4, h5, h6 {
-      color: #00ffff !important; /* লেখাকে উজ্জ্বল নিয়ন সায়ান রঙ করবে */
+      color: #00ffff !important; /* লেখাকে উজ্জ্বল নিয়ন সায়ান রঙ করবে */
       text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
     }
-   /* মারাত্মক এডভান্স HUD ঘড়ির ডিজাইন */
+   /* মারাত্মক এডভান্স HUD ঘড়ির ডিজাইন */
 .hud-clock-wrapper {
     position: fixed;
     bottom: 25px;
@@ -317,7 +276,7 @@
 }
 .fast-ms { color: #ffcc00; font-weight: bold; }
 
-/* মেইন সময়ের স্টাইল */
+/* মেইন সময়ের স্টাইল */
 .hud-time-display {
     font-size: 35px;
     font-weight: 900;
@@ -353,9 +312,7 @@
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-
     </style>
-
 </head>
 <body>
     <!-- Gaming Loading Screen -->
@@ -363,8 +320,6 @@
       <div class="loader-text">SYSTEM LOADING...</div>
       <div class="loader-bar"><div class="loader-fill"></div></div>
     </div>
-
-  
 
     <div id="loader"><div class="spinner"></div><h2>সিস্টেম চেক করা হচ্ছে...</h2></div>
 
@@ -400,7 +355,8 @@
 
             <div class="main-panel">
                 <div class="topbar">
-                    <h3 style="color: var(--heading-color); margin-right: auto;">কোটালপুর মধুসূদন হাই স্কুল</h3>
+                    <!-- স্কুলের নাম কালো রঙে এবং হালকা ছায়া দিয়ে -->
+                    <h3 style="color: black; text-shadow: 1px 1px 2px white; margin-right: auto;">কোটালপুর মধুসূদন হাই স্কুল</h3>
                     
                     <!-- স্মার্ট সার্চ বার -->
                     <div class="search-bar" style="margin-right: 30px;">
@@ -422,15 +378,15 @@
                         <div class="stats-grid">
                             <div class="stat-card">
                                 <div class="stat-icon" style="background: #eff6ff; color: #3b82f6;"><i class="fa-solid fa-user-graduate"></i></div>
-                                <div class="stat-details"><h3 id="main-student">০</h3><p style="color: var(--table-text);">মোট ছাত্রছাত্রী</p></div>
+                                <div class="stat-details"><h3 id="main-student">0</h3><p style="color: var(--table-text);">মোট ছাত্রছাত্রী</p></div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-icon" style="background: #f0fdf4; color: #22c55e;"><i class="fa-solid fa-check-to-slot"></i></div>
-                                <div class="stat-details"><h3><span id="attendance-counter">০%</span></h3><p style="color: var(--table-text);">আজকের উপস্থিতি</p></div>
+                                <div class="stat-details"><h3><span id="attendance-counter">0%</span></h3><p style="color: var(--table-text);">আজকের উপস্থিতি</p></div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-icon" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-indian-rupee-sign"></i></div>
-                                <div class="stat-details"><h3>৳ ২৫,৪০০</h3><p style="color: var(--table-text);">আজকের কালেকশন</p></div>
+                                <div class="stat-details"><h3>৳ 25,400</h3><p style="color: var(--table-text);">আজকের কালেকশন</p></div>
                             </div>
                         </div>
 
@@ -444,29 +400,28 @@
                                     <tr><th>রোল নং</th><th>ছাত্র/ছাত্রীর নাম</th><th>শ্রেণি / বিভাগ</th><th>অ্যাকশন</th></tr>
                                 </thead>
                                 <tbody id="studentTableBody">
-                                    <tr><td>#ST-2026-01</td><td>অয়ন মুখার্জী</td><td>একাদশ (বিজ্ঞান)</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td></tr>
-                                    <tr><td>#ST-2026-02</td><td>শ্রেয়া দাস</td><td>একাদশ (কলা)</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td>#ST-2026-01</td><td>অয়ন মুখার্জী</td><td>একাদশ (বিজ্ঞান)</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td></tr>
+                                    <tr><td>#ST-2026-02</td><td>শ্রেয়া দাস</td><td>একাদশ (কলা)</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- প্যানেল ২: ছাত্রছাত্রী ডেটাবেস (১২৪০ জনের লিস্ট) -->
+                    <!-- প্যানেল ২: ছাত্রছাত্রী ডেটাবেস -->
                     <div id="studentsPanel" class="panel-section">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h2 style="color: var(--heading-color); font-size: 24px;">ছাত্রছাত্রী ডেটাবেস (২০২৬ সেশন)</h2>
-                            <span style="background: #22c55e; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px;">মোট ছাত্রছাত্রী:<span id="dbcounter">০</span></span>
+                            <h2 style="color: var(--heading-color); font-size: 24px;">ছাত্রছাত্রী ডেটাবেস (2026 সেশন)</h2>
+                            <span style="background: #22c55e; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px;">মোট ছাত্রছাত্রী:<span id="dbcounter">0</span></span>
                         </div>
                         
                         <div class="table-container" style="height: calc(100vh - 270px); overflow-y: auto; padding: 0;">
-                            <!-- এখানে ID যোগ করা হয়েছে যাতে এক্সেল বুঝতে পারে কোন টেবিলটা ডাউনলোড হবে -->
                             <table id="studentDataTable" style="width: 100%;">
                                 <thead style="position: sticky; top: 0; background: var(--card-bg); box-shadow: 0 2px 4px rgba(0,0,0,0.05); z-index: 10;">
                                     <tr>
                                         <th style="padding: 15px;">রোল নং</th>
                                         <th style="padding: 15px;">ছাত্র/ছাত্রীর নাম</th>
                                         <th style="padding: 15px;">লিঙ্গ</th>
-                                        <th style="padding: 15px;">বয়স</th>
+                                        <th style="padding: 15px;">বয়স</th>
                                         <th style="padding: 15px;">শ্রেণি ও বিভাগ</th>
                                         <th style="padding: 15px;">অভিভাবকের নম্বর</th>
                                     </tr>
@@ -478,9 +433,8 @@
                         </div>
                         
                         <div style="padding: 15px; text-align: center; color: var(--table-text); background: var(--card-bg); border-top: 1px solid var(--border-color); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
-                            <span>দেখাচ্ছে ১ থেকে ১,২৪০ জন (সম্পূর্ণ ডেটাবেস)</span>
+                            <span>দেখাচ্ছে 1 থেকে 1,240 জন (সম্পূর্ণ ডেটাবেস)</span>
                             <div>
-                                <!-- এক্সেল ডাউনলোড বাটন -->
                                 <button class="btn-sm" style="background: #16a34a;" onclick="exportTableToExcel('studentDataTable', 'School_Students_Data')">
                                     <i class="fa-solid fa-file-excel"></i> এক্সেলে ডাউনলোড করুন
                                 </button>
@@ -492,7 +446,7 @@
                     <div id="teachersPanel" class="panel-section">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                             <h2 style="color: var(--heading-color); font-size: 24px;">শিক্ষক মণ্ডলী ও স্টাফ তালিকা</h2>
-                            <span style="background: #3b82f6; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px;">মোট স্টাফ: ৪০ জন</span>
+                            <span style="background: #3b82f6; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px;">মোট স্টাফ: 40 জন</span>
                         </div>
                         
                         <div class="table-container" style="height: calc(100vh - 200px); overflow-y: auto; padding: 0;">
@@ -502,54 +456,51 @@
                                         <th style="padding: 15px;">ক্রমিক নং</th>
                                         <th style="padding: 15px;">নাম</th>
                                         <th style="padding: 15px;">লিঙ্গ</th>
-                                        <th style="padding: 15px;">বয়স</th>
-                                        <th style="padding: 15px;">বিষয় / পদ</th>
+                                        <th style="padding: 15px;">বয়স</th>
+                                        <th style="padding: 15px;">বিষয় / পদ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td>১</td><td>সুব্রত বিশ্বাস</td><td>পুরুষ</td><td>৫৮</td><td style="font-weight: bold; color: #3b82f6;">প্রধান শিক্ষক</td></tr>
-                                    <tr><td>২</td><td>সুমিত ব্যানার্জী</td><td>পুরুষ</td><td>৪৫</td><td>ইতিহাস</td></tr>
-                                    <tr><td>৩</td><td>অনিতা সেন</td><td>মহিলা</td><td>৩৮</td><td>ভূগোল</td></tr>
-                                    <tr><td>৪</td><td>রাহুল চ্যাটার্জী</td><td>পুরুষ</td><td>৪২</td><td>শিক্ষাবিজ্ঞান</td></tr>
-                                    <tr><td>৫</td><td>প্রিয়াঙ্কা দাস</td><td>মহিলা</td><td>৩৫</td><td>রাষ্ট্রবিজ্ঞান</td></tr>
-                                    <tr><td>৬</td><td>অরিন্দম ঘোষ</td><td>পুরুষ</td><td>৫০</td><td>বাংলা</td></tr>
-                                    <tr><td>৭</td><td>সুজাতা মিত্র</td><td>মহিলা</td><td>২৯</td><td>ইংরেজি</td></tr>
-                                    <tr><td>৮</td><td>বিকাশ রায়</td><td>পুরুষ</td><td>৪৮</td><td>গণিত</td></tr>
-                                    <tr><td>৯</td><td>নূপুর বসু</td><td>মহিলা</td><td>৩১</td><td>ভৌতবিজ্ঞান</td></tr>
-                                    <tr><td>১০</td><td>রতন হালদার</td><td>পুরুষ</td><td>৫৫</td><td>জীবনবিজ্ঞান</td></tr>
-                                    
-                                    <tr><td>১১</td><td>সমীর দাস</td><td>পুরুষ</td><td>৩৬</td><td>ইতিহাস</td></tr>
-                                    <tr><td>১২</td><td>বর্ণালী দত্ত</td><td>মহিলা</td><td>৪১</td><td>ভূগোল</td></tr>
-                                    <tr><td>১৩</td><td>তপন কুমার পাল</td><td>পুরুষ</td><td>৫২</td><td>সংস্কৃত</td></tr>
-                                    <tr><td>১৪</td><td>শ্রেয়া মুখার্জী</td><td>মহিলা</td><td>২৮</td><td>শিক্ষাবিজ্ঞান</td></tr>
-                                    <tr><td>১৫</td><td>কাঞ্চন মল্লিক</td><td>পুরুষ</td><td>৩৪</td><td>রাষ্ট্রবিজ্ঞান</td></tr>
-                                    <tr><td>১৬</td><td>রিয়া সাহা</td><td>মহিলা</td><td>৩০</td><td>দর্শন (Philosophy)</td></tr>
-                                    <tr><td>১৭</td><td>অয়ন চক্রবর্তী</td><td>পুরুষ</td><td>৪৪</td><td>শারীরিক শিক্ষা (Sports)</td></tr>
-                                    <tr><td>১৮</td><td>রেশমি কর</td><td>মহিলা</td><td>৩৭</td><td>কম্পিউটার অ্যাপ্লিকেশন</td></tr>
-                                    <tr><td>১৯</td><td>মৌমিতা পাল</td><td>মহিলা</td><td>৩২</td><td>বাংলা</td></tr>
-                                    <tr><td>২০</td><td>দীপক কর্মকার</td><td>পুরুষ</td><td>৪৬</td><td>ইংরেজি</td></tr>
-                                    
-                                    <tr><td>২১</td><td>অরুন্ধতী রায়</td><td>মহিলা</td><td>৫১</td><td>গণিত</td></tr>
-                                    <tr><td>২২</td><td>প্রদীপ গুহ</td><td>পুরুষ</td><td>৩৯</td><td>অর্থনীতি (Economics)</td></tr>
-                                    <tr><td>২৩</td><td>নীলাঞ্জনা সেন</td><td>মহিলা</td><td>৪৩</td><td>পরিবেশ বিদ্যা</td></tr>
-                                    <tr><td>২৪</td><td>সুকান্ত ভট্টাচার্য</td><td>পুরুষ</td><td>২৭</td><td>ইতিহাস</td></tr>
-                                    <tr><td>২৫</td><td>অন্বেষা মিশ্র</td><td>মহিলা</td><td>৩৩</td><td>ভূগোল</td></tr>
-                                    <tr><td>২৬</td><td>কুণাল দেবনাথ</td><td>পুরুষ</td><td>৪৭</td><td>হিসাববিজ্ঞান (Commerce)</td></tr>
-                                    <tr><td>২৭</td><td>তানিয়া ঘোষ</td><td>মহিলা</td><td>২৬</td><td>শিক্ষাবিজ্ঞান</td></tr>
-                                    <tr><td>২৮</td><td>মানব সরকার</td><td>পুরুষ</td><td>৫৩</td><td>রাষ্ট্রবিজ্ঞান</td></tr>
-                                    <tr><td>২৯</td><td>রিমি দাস</td><td>মহিলা</td><td>৩১</td><td>বাংলা</td></tr>
-                                    <tr><td>৩০</td><td>জয়ন্ত বোস</td><td>পুরুষ</td><td>৪৯</td><td>ইংরেজি</td></tr>
-                                    
-                                    <tr><td>৩১</td><td>স্বাতী চ্যাটার্জী</td><td>মহিলা</td><td>৩৫</td><td>গণিত</td></tr>
-                                    <tr><td>৩২</td><td>কৌশিক সেন</td><td>পুরুষ</td><td>৩৮</td><td>ভৌতবিজ্ঞান</td></tr>
-                                    <tr><td>৩৩</td><td>তৃণা দাস</td><td>মহিলা</td><td>৪২</td><td>জীবনবিজ্ঞান</td></tr>
-                                    <tr><td>৩৪</td><td>অমিত কুমার</td><td>পুরুষ</td><td>৫৪</td><td>লাইব্রেরিয়ান</td></tr>
-                                    <tr><td>৩৫</td><td>শঙ্কর শীল</td><td>পুরুষ</td><td>৪৫</td><td>হেড ক্লার্ক</td></tr>
-                                    <tr><td>৩৬</td><td>নবনীতা গুহ</td><td>মহিলা</td><td>২৯</td><td>অফিস ক্লার্ক</td></tr>
-                                    <tr><td>৩৭</td><td>মাধব দাস</td><td>পুরুষ</td><td>৩৬</td><td>ল্যাব অ্যাসিস্ট্যান্ট</td></tr>
-                                    <tr><td>৩৮</td><td>কবিতা রায়</td><td>মহিলা</td><td>৫০</td><td>গ্রুপ-ডি স্টাফ</td></tr>
-                                    <tr><td>৩৯</td><td>সঞ্জয় বাগদী</td><td>পুরুষ</td><td>৪২</td><td>গ্রুপ-ডি স্টাফ</td></tr>
-                                    <tr><td>৪০</td><td>রঞ্জিত বাউড়ি</td><td>পুরুষ</td><td>৪১</td><td>নিরাপত্তা রক্ষী (Security)</td></tr>
+                                    <tr><td>1</td><td>সুব্রত বিশ্বাস</td><td>পুরুষ</td><td>58</td><td style="font-weight: bold; color: #3b82f6;">প্রধান শিক্ষক</td></tr>
+                                    <tr><td>2</td><td>সুমিত ব্যানার্জী</td><td>পুরুষ</td><td>45</td><td>ইতিহাস</td></tr>
+                                    <tr><td>3</td><td>অনিতা সেন</td><td>মহিলা</td><td>38</td><td>ভূগোল</td></tr>
+                                    <tr><td>4</td><td>রাহুল চ্যাটার্জী</td><td>পুরুষ</td><td>42</td><td>শিক্ষাবিজ্ঞান</td></tr>
+                                    <tr><td>5</td><td>প্রিয়াঙ্কা দাস</td><td>মহিলা</td><td>35</td><td>রাষ্ট্রবিজ্ঞান</td></tr>
+                                    <tr><td>6</td><td>অরিন্দম ঘোষ</td><td>পুরুষ</td><td>50</td><td>বাংলা</td></tr>
+                                    <tr><td>7</td><td>সুজাতা মিত্র</td><td>মহিলা</td><td>29</td><td>ইংরেজি</td></tr>
+                                    <tr><td>8</td><td>বিকাশ রায়</td><td>পুরুষ</td><td>48</td><td>গণিত</td></tr>
+                                    <tr><td>9</td><td>নূপুর বসু</td><td>মহিলা</td><td>31</td><td>ভৌতবিজ্ঞান</td></tr>
+                                    <tr><td>10</td><td>রতন হালদার</td><td>পুরুষ</td><td>55</td><td>জীবনবিজ্ঞান</td></tr>
+                                    <tr><td>11</td><td>সমীর দাস</td><td>পুরুষ</td><td>36</td><td>ইতিহাস</td></tr>
+                                    <tr><td>12</td><td>বর্ণালী দত্ত</td><td>মহিলা</td><td>41</td><td>ভূগোল</td></tr>
+                                    <tr><td>13</td><td>তপন কুমার পাল</td><td>পুরুষ</td><td>52</td><td>সংস্কৃত</td></tr>
+                                    <tr><td>14</td><td>শ্রেয়া মুখার্জী</td><td>মহিলা</td><td>28</td><td>শিক্ষাবিজ্ঞান</td></tr>
+                                    <tr><td>15</td><td>কাঞ্চন মল্লিক</td><td>পুরুষ</td><td>34</td><td>রাষ্ট্রবিজ্ঞান</td></tr>
+                                    <tr><td>16</td><td>রিয়া সাহা</td><td>মহিলা</td><td>30</td><td>দর্শন (Philosophy)</td></tr>
+                                    <tr><td>17</td><td>অয়ন চক্রবর্তী</td><td>পুরুষ</td><td>44</td><td>শারীরিক শিক্ষা (Sports)</td></tr>
+                                    <tr><td>18</td><td>রেশমি কর</td><td>মহিলা</td><td>37</td><td>কম্পিউটার অ্যাপ্লিকেশন</td></tr>
+                                    <tr><td>19</td><td>মৌমিতা পাল</td><td>মহিলা</td><td>32</td><td>বাংলা</td></tr>
+                                    <tr><td>20</td><td>দীপক কর্মকার</td><td>পুরুষ</td><td>46</td><td>ইংরেজি</td></tr>
+                                    <tr><td>21</td><td>অরুন্ধতী রায়</td><td>মহিলা</td><td>51</td><td>গণিত</td></tr>
+                                    <tr><td>22</td><td>প্রদীপ গুহ</td><td>পুরুষ</td><td>39</td><td>অর্থনীতি (Economics)</td></tr>
+                                    <tr><td>23</td><td>নীলাঞ্জনা সেন</td><td>মহিলা</td><td>43</td><td>পরিবেশ বিদ্যা</td></tr>
+                                    <tr><td>24</td><td>সুকান্ত ভট্টাচার্য</td><td>পুরুষ</td><td>27</td><td>ইতিহাস</td></tr>
+                                    <tr><td>25</td><td>অন্বেষা মিশ্র</td><td>মহিলা</td><td>33</td><td>ভূগোল</td></tr>
+                                    <tr><td>26</td><td>কুণাল দেবনাথ</td><td>পুরুষ</td><td>47</td><td>হিসাববিজ্ঞান (Commerce)</td></tr>
+                                    <tr><td>27</td><td>তানিয়া ঘোষ</td><td>মহিলা</td><td>26</td><td>শিক্ষাবিজ্ঞান</td></tr>
+                                    <tr><td>28</td><td>মানব সরকার</td><td>পুরুষ</td><td>53</td><td>রাষ্ট্রবিজ্ঞান</td></tr>
+                                    <tr><td>29</td><td>রিমি দাস</td><td>মহিলা</td><td>31</td><td>বাংলা</td></tr>
+                                    <tr><td>30</td><td>জয়ন্ত বোস</td><td>পুরুষ</td><td>49</td><td>ইংরেজি</td></tr>
+                                    <tr><td>31</td><td>স্বাতী চ্যাটার্জী</td><td>মহিলা</td><td>35</td><td>গণিত</td></tr>
+                                    <tr><td>32</td><td>কৌশিক সেন</td><td>পুরুষ</td><td>38</td><td>ভৌতবিজ্ঞান</td></tr>
+                                    <tr><td>33</td><td>তৃণা দাস</td><td>মহিলা</td><td>42</td><td>জীবনবিজ্ঞান</td></tr>
+                                    <tr><td>34</td><td>অমিত কুমার</td><td>পুরুষ</td><td>54</td><td>লাইব্রেরিয়ান</td></tr>
+                                    <tr><td>35</td><td>শঙ্কর শীল</td><td>পুরুষ</td><td>45</td><td>হেড ক্লার্ক</td></tr>
+                                    <tr><td>36</td><td>নবনীতা গুহ</td><td>মহিলা</td><td>29</td><td>অফিস ক্লার্ক</td></tr>
+                                    <tr><td>37</td><td>মাধব দাস</td><td>পুরুষ</td><td>36</td><td>ল্যাব অ্যাসিস্ট্যান্ট</td></tr>
+                                    <tr><td>38</td><td>কবিতা রায়</td><td>মহিলা</td><td>50</td><td>গ্রুপ-ডি স্টাফ</td></tr>
+                                    <tr><td>39</td><td>সঞ্জয় বাগদী</td><td>পুরুষ</td><td>42</td><td>গ্রুপ-ডি স্টাফ</td></tr>
+                                    <tr><td>40</td><td>রঞ্জিত বাউড়ি</td><td>পুরুষ</td><td>41</td><td>নিরাপত্তা রক্ষী (Security)</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -560,7 +511,7 @@
                         <h2 style="color: var(--heading-color); font-size: 24px;">ফিজ ও পেমেন্ট হিস্ট্রি</h2>
                         <div class="construction-box">
                             <i class="fa-solid fa-file-invoice-dollar"></i>
-                            <h2>পেমেন্ট গেটওয়ে</h2>
+                            <h2>পেমেন্ট গেটওয়ে</h2>
                             <p style="color: var(--table-text);">অনলাইন ফি কালেকশন সিস্টেম ডেভেলপমেন্টের অধীনে আছে।</p>
                         </div>
                     </div>
@@ -568,7 +519,7 @@
                     <!-- প্যানেল ৫: সেটিংস ও থিম -->
                     <div id="settingsPanel" class="panel-section">
                         <h2 style="margin-bottom: 10px; color: var(--heading-color); font-size: 24px;"><i class="fa-solid fa-palette"></i> সিস্টেম থিম সেটিংস</h2>
-                        <p style="color: var(--table-text); margin-bottom: 30px;">আপনার পছন্দ অনুযায়ী ওয়েবসাইটের লুক পরিবর্তন করুন।</p>
+                        <p style="color: var(--table-text); margin-bottom: 30px;">আপনার পছন্দ অনুযায়ী ওয়েবসাইটের লুক পরিবর্তন করুন।</p>
                         <div class="theme-grid">
                             <div class="theme-card" onclick="changeTheme('light')"><i class="fa-regular fa-sun" style="color: #f59e0b;"></i><h3>লাইট মোড</h3></div>
                             <div class="theme-card" onclick="changeTheme('dark')"><i class="fa-solid fa-moon" style="color: #6366f1;"></i><h3>ডার্ক মোড</h3></div>
@@ -605,11 +556,11 @@
 
     <!-- জাভাস্ক্রিপ্ট কন্ট্রোল -->
     <script>
-        // ১২৪০ জন ছাত্রছাত্রীর ডেটাবেস তৈরি করার লুপ
+        // ১২৪০ জন ছাত্রছাত্রীর ডেটাবেস তৈরি করার লুপ (ইংরেজিতে)
         window.onload = function() {
-            const firstNamesM = ["অয়ন", "রাহুল", "সায়ন", "বিকাশ", "কৌশিক", "সুমন", "দেবরাজ", "রোহিত", "মনোজ", "আরিফ", "সৌরভ", "বিশাল", "অক্ষয়", "শুভম", "তনয়", "প্রতীক", "গৌরব", "রণিত", "বিক্রম", "ইমরান", "সুকান্ত", "দীপঙ্কর", "মন্টু", "সাগর", "অমিত", "সমীর", "অরিন্দম"];
-            const firstNamesF = ["শ্রেয়া", "রিতিকা", "অদিতি", "সুস্মিতা", "নবনীতা", "পূজা", "অঞ্জলি", "সুনীতা", "রেশমি", "দিশা", "রিয়া", "নেহা", "ইশিতা", "বৃষ্টি", "সঞ্জনা", "পাপিয়া", "শ্রেয়সী", "জলি", "ফারহানা", "লিপি", "রীতা", "অনিমা", "প্রিয়া", "তানিয়া", "স্বাতী"];
-            const lastNamesList = ["মুখার্জী", "দাস", "সেন", "বোস", "কর্মকার", "মিশ্র", "পাত্র", "রায়", "সাহা", "হালদার", "ঘোষ", "চক্রবর্তী", "মল্লিক", "পাসোয়ান", "বিশ্বাস", "বাউড়ি", "প্রামাণিক", "খাতুন", "সেখ", "সেনগুপ্ত", "পাল", "মন্ডল", "গুপ্তা", "শর্মা", "সিং", "গুহ", "মিত্র", "দে", "সরকার", "আলী", "সর্দার"];
+            const firstNamesM = ["অয়ন", "রাহুল", "সায়ন", "বিকাশ", "কৌশিক", "সুমন", "দেবরাজ", "রোহিত", "মনোজ", "আরিফ", "সৌরভ", "বিশাল", "অক্ষয়", "শুভম", "তনয়", "প্রতীক", "গৌরব", "রণিত", "বিক্রম", "ইমরান", "সুকান্ত", "দীপঙ্কর", "মন্টু", "সাগর", "অমিত", "সমীর", "অরিন্দম"];
+            const firstNamesF = ["শ্রেয়া", "রিতিকা", "অদিতি", "সুস্মিতা", "নবনীতা", "পূজা", "অঞ্জলি", "সুনীতা", "রেশমি", "দিশা", "রিয়া", "নেহা", "ইশিতা", "বৃষ্টি", "সঞ্জনা", "পাপিয়া", "শ্রেয়সী", "জলি", "ফারহানা", "লিপি", "রীতা", "অনিমা", "প্রিয়া", "তানিয়া", "স্বাতী"];
+            const lastNamesList = ["মুখার্জী", "দাস", "সেন", "বোস", "কর্মকার", "মিশ্র", "পাত্র", "রায়", "সাহা", "হালদার", "ঘোষ", "চক্রবর্তী", "মল্লিক", "পাসোয়ান", "বিশ্বাস", "বাউড়ি", "প্রামাণিক", "খাতুন", "সেখ", "সেনগুপ্ত", "পাল", "মন্ডল", "গুপ্তা", "শর্মা", "সিং", "গুহ", "মিত্র", "দে", "সরকার", "আলী", "সর্দার"];
             const sectionList = ["একাদশ (বিজ্ঞান)", "একাদশ (কলা)", "একাদশ (বাণিজ্য)", "দ্বাদশ (বিজ্ঞান)", "দ্বাদশ (কলা)", "দ্বাদশ (বাণিজ্য)"];
 
             let allStudentsHTML = '';
@@ -618,18 +569,17 @@
                 let fName = isMale ? firstNamesM[Math.floor(Math.random() * firstNamesM.length)] : firstNamesF[Math.floor(Math.random() * firstNamesF.length)];
                 let lName = lastNamesList[Math.floor(Math.random() * lastNamesList.length)];
                 let fullName = fName + " " + lName;
-                let gender = isMale ? "ছেলে" : "মেয়ে";
+                let gender = isMale ? "ছেলে" : "মেয়ে";
                 let age = Math.floor(Math.random() * 3) + 16; 
                 let section = sectionList[Math.floor(Math.random() * sectionList.length)];
                 let rollStr = i.toString().padStart(4, '0');
-                let phone = "৯" + Math.floor(Math.random() * 900000000 + 100000000);
+                let phone = "9" + Math.floor(Math.random() * 900000000 + 100000000); // 9 দিয়ে শুরু হওয়া নম্বর
 
                 allStudentsHTML += `<tr><td>#ST-2026-${rollStr}</td><td>${fullName}</td><td>${gender}</td><td>${age}</td><td>${section}</td><td>${phone}</td></tr>`;
             }
             document.getElementById('fullStudentDatabase').innerHTML = allStudentsHTML;
         };
 
-        // এক্সেল ফাইলে ডাউনলোড করার ফাংশন
         function exportTableToExcel(tableID, filename = ''){
             var downloadLink;
             var dataType = 'application/vnd.ms-excel';
@@ -650,7 +600,6 @@
             }
         }
 
-        // স্মার্ট সার্চ ফাংশন
         function searchStudent() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let table = document.getElementById('fullStudentDatabase');
@@ -667,7 +616,6 @@
             }
         }
 
-        // লগইন (পাসওয়ার্ড: 9163966795)
     function startLogin() {
     let pass = document.getElementById("adminPassword").value;
     if (pass === "9163966795") {
@@ -679,7 +627,6 @@
             document.getElementById('dashboard').classList.add('active');
             document.getElementById('adminPassword').value = "";
             
-            // ড্যাশবোর্ড খোলার ঠিক সাথে সাথেই আলাদা আলাদা সময়ে অ্যানিমেশন শুরু হবে
             setTimeout(() => {
                 animateCounter('main-student', 1240, false);
             }, 100); 
@@ -690,7 +637,7 @@
             
         }, 1500);
     } else {
-        alert("ভুল এডমিন আইডি! দয়া করে সঠিক নম্বরটি দিন।");
+        alert("ভুল এডমিন আইডি! দয়া করে সঠিক নম্বরটি দিন।");
     }
 }
         function logout() {
@@ -699,7 +646,6 @@
             switchPanel('overviewPanel', 'menu-overview');
         }
 
-        // পেজ পরিবর্তন
         function switchPanel(panelId, menuId) {
             document.querySelectorAll('.panel-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
@@ -718,51 +664,37 @@
        function saveStudent() {
     let name = document.getElementById('studentName').value;
     let subject = document.getElementById('studentSubject').value;
-    if (name.trim() === "") { alert("দয়া করে স্টুডেন্টের নাম লিখুন!"); return; }
+    if (name.trim() === "") { alert("দয়া করে স্টুডেন্টের নাম লিখুন!"); return; }
 
-    // ১. টেবিল আপডেট করা (তোমার আগের কোড)
     let table = document.getElementById('studentTableBody');
     let newRow = table.insertRow(0);
     newRow.innerHTML = `<td>#ST-2026-NEW</td><td>${name}</td><td>${subject}</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td>`;
 
-    // ২. ডেটাবেসে (localStorage) সেভ করা (নতুন লজিক)
-    // ডায়েরি থেকে পুরনো ডেটা পড়ো, না থাকলে ফাঁকা লিস্ট [] নাও
     let students = JSON.parse(localStorage.getItem("studentsDatabase")) || [];
     
-    // নতুন স্টুডেন্টের একটা ডেটা প্যাকেট তৈরি করো
     let newStudentData = {
         studentName: name,
         studentSubject: subject
     };
     
-    // লিস্টের একদম শুরুতে (unshift) নতুন স্টুডেন্টকে ঢোকাও
     students.unshift(newStudentData);
-    
-    // এবার পুরো লিস্টটাকে স্ট্রিং (JSON.stringify) বানিয়ে ডায়েরিতে সেভ করে দাও
     localStorage.setItem("studentsDatabase", JSON.stringify(students));
 
-    // ৩. কাজ শেষ, ফর্ম রিসেট করে দাও
     document.getElementById('studentName').value = "";
     closeModal();
 }
 
-// ২. পড়ার কাজ (Load Data): পেজ খুললে ডায়েরি থেকে ডেটা পড়ে টেবিলে বসানো
 function loadSavedStudents() {
-    // ডায়েরি থেকে ডেটা নাও, না থাকলে ফাঁকা লিস্ট
     let students = JSON.parse(localStorage.getItem("studentsDatabase")) || [];
     let table = document.getElementById('studentTableBody');
     
-    // ডায়েরিতে থাকা প্রত্যেকটা নামের জন্য লুপ চালিয়ে একটা করে লাইন তৈরি করো
-    // (উল্টো করে পড়ছি যাতে সবথেকে নতুন নামটা টেবিলের একদম ওপরে থাকে)
     students.slice().reverse().forEach(function(student) {
         let newRow = table.insertRow(0);
         newRow.innerHTML = `<td>#ST-2026-NEW</td><td>${student.studentName}</td><td>${student.studentSubject}</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td>`;
     });
 }
 
-// ব্রাউজারকে নির্দেশ দেওয়া হলো: পেজ লোড হওয়ার সাথে সাথেই ডায়েরি পড়ার কাজটা শুরু করে দাও
 window.addEventListener('load', loadSavedStudents);
-
 
         function deleteStudent(button) {
             if (confirm("আপনি কি সত্যিই এই ডেটা ডিলিট করতে চান?")) {
@@ -770,36 +702,28 @@ window.addEventListener('load', loadSavedStudents);
                 row.parentNode.removeChild(row);
             }
         }
-    
-
     </script>
     <script>
 
-  // মারাত্মক এডভান্স ডুয়েল-কোর ইঞ্জিন (ভয়েস এআই সহ)
-function startHUDClock() {
-    let banglaDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
-    
-    // নম্বরকে বাংলায় বদলানোর ফাংশন
-    function toBangla(num, pad = 2) {
-        return num.toString().padStart(pad, '0').replace(/[0-9]/g, x => banglaDigits[x]);
-    }
+// মারাত্মক এডভান্স ডুয়েল-কোর ইঞ্জিন (ভয়েস এআই সহ - ইংরেজি নম্বর)
+let lastSpokenTime = ""; 
 
-    // কথা বলার AI ইঞ্জিন (Jarvis Voice)
+function startHUDClock() {
+    // কথা বলার AI ইঞ্জিন (বাংলায় কথা বলবে)
     function speakTime(text) {
-        let speech = new SpeechSynthesisUtterance();
-        speech.text = text;
-        speech.lang = 'bn-IN'; // বাংলা ভাষা
-        speech.rate = 0.9; // একটু ধীরেসুস্থে বলবে যাতে পরিষ্কার বোঝা যায়
+        let speech = new SpeechSynthesisUtterance(text);
+        speech.lang = 'bn-IN'; // বাংলা ভাষা বজায় রাখা হলো
+        speech.rate = 0.9;
         window.speechSynthesis.speak(speech);
     }
 
-    // ইঞ্জিন ১: রকেটের স্পিডে মিলি-সেকেন্ড (হ্যাকার ভাইব)
+    // ইঞ্জিন ১: রকেটের স্পিডে মিলি-সেকেন্ড (ইংরেজিতে)
     setInterval(() => {
         let ms = new Date().getMilliseconds();
-        document.getElementById('hud-msec').innerText = toBangla(ms, 3);
+        document.getElementById('hud-msec').innerText = ms.toString().padStart(3, '0');
     }, 50);
 
-    // ইঞ্জিন ২: মেইন সময়, প্রোগ্রেস বার এবং এআই ভয়েস
+    // ইঞ্জিন ২: মেইন সময়, প্রোগ্রেস বার এবং এআই ভয়েস
     setInterval(() => {
         let now = new Date();
         let h = now.getHours();
@@ -807,127 +731,101 @@ function startHUDClock() {
         let s = now.getSeconds();
         let ampm = h >= 12 ? 'PM' : 'AM';
         
-        let hour12 = h % 12;
-        hour12 = hour12 ? hour12 : 12; // ০ বাজলে ১২ দেখাবে
+        let hour12 = h % 12 || 12;
 
-        // স্ক্রিনে সময় বসানো
-        document.getElementById('hud-hr').innerText = toBangla(hour12);
-        document.getElementById('hud-min').innerText = toBangla(m);
-        document.getElementById('hud-sec').innerText = toBangla(s);
+        // স্ক্রিনে সময় বসানো (ইংরেজিতে)
+        document.getElementById('hud-hr').innerText = hour12.toString().padStart(2, '0');
+        document.getElementById('hud-min').innerText = m.toString().padStart(2, '0');
+        document.getElementById('hud-sec').innerText = s.toString().padStart(2, '0');
         document.getElementById('hud-ampm').innerText = ampm;
 
         // প্রোগ্রেস বার
         let secPercentage = (s / 59) * 100;
         document.getElementById('hud-sec-fill').style.width = secPercentage + '%';
 
-        // তারিখ
+        // তারিখ (ইংরেজিতে)
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('hud-date').innerText = now.toLocaleDateString('bn-IN', options);
+        document.getElementById('hud-date').innerText = now.toLocaleDateString('en-IN', options);
 
         // ==========================================
-        // AI ভয়েস অ্যানাউন্সমেন্ট (রুদ্র স্যারের জন্য)
+        // AI ভয়েস অ্যানাউন্সমেন্ট (রুদ্র স্যারের জন্য বাংলায়)
         // ==========================================
-        // ঠিক শূন্য সেকেন্ডে মেশিন চেক করবে কটা বাজে
-        if (s === 0) {
+        let currentKey = h + ":" + m; 
+        
+        if ((m === 0 || m === 30) && lastSpokenTime !== currentKey) {
             let banglaTimes = {1: 'একটা', 2: 'দুটো', 3: 'তিনটে', 4: 'চারটে', 5: 'পাঁচটা', 6: 'ছটা', 7: 'সাতটা', 8: 'আটটা', 9: 'নটা', 10: 'দশটা', 11: 'এগারোটা', 12: 'বারোটা'};
 
             if (m === 0) {
-                // যখন পুরো ঘন্টা বাজবে (যেমন: ৩:০০)
                 speakTime(`রুদ্র স্যার, এখন ঠিক ${banglaTimes[hour12]} বাজে।`);
-            } 
-            else if (m === 30) {
-                // যখন সাড়ে বাজবে (যেমন: ৩:৩০)
-                let halfText = "";
-                if (hour12 === 1) halfText = "দেড়টা";
-                else if (hour12 === 2) halfText = "আড়াইটে";
-                else halfText = `সাড়ে ${banglaTimes[hour12]}`;
-                
+            } else {
+                let halfText = (hour12 === 1) ? "দেড়টা" : (hour12 === 2) ? "আড়াইটে" : `সাড়ে ${banglaTimes[hour12]}`;
                 speakTime(`রুদ্র স্যার, এখন ${halfText} বাজে।`);
             }
+            
+            lastSpokenTime = currentKey; 
         }
 
     }, 1000);
 }
 
-// পেজ খুললেই ইঞ্জিন স্টার্ট!
 window.addEventListener('load', startHUDClock);
 
 
-  // Animated Number Counter (Bangla Support - Perfect Speed)
+// Animated Number Counter (English Support)
 function animateCounter(id, targetNum, isPercentage) {
     let currentNum = 0;
-    // স্পিড একটু কমিয়ে দিলাম (১৫ এবং ৩০ মিলি-সেকেন্ড)
     let speed = targetNum > 100 ? 15 : 30; 
     let element = document.getElementById(id);
+    if(!element) return;
     
     let timer = setInterval(function() {
-        // লাফিয়ে বাড়ার পরিমাণটা ২৫ থেকে কমিয়ে ৭ করে দিলাম
-        currentNum += (targetNum > 100 ? 7 : 1); 
+        currentNum += (targetNum > 100 ? 15 : 1); 
         
         if(currentNum >= targetNum) {
             currentNum = targetNum;
             clearInterval(timer);
         }
         
-        // ইংরেজি সংখ্যাকে বাংলায় বদলানোর স্পেশাল ট্রিক
-        let banglaDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
-        let formattedNum = currentNum.toString().replace(/[0-9]/g, x => banglaDigits[x]);
+        let formattedNum = currentNum.toString();
         
-        // ১,২৪০ এর ক্ষেত্রে কমা যোগ করা (১০০০ এর ওপরে গেলে)
+        // 1240 এর ক্ষেত্রে কমা যোগ করা
         if(targetNum === 1240 && currentNum >= 1000) {
-            formattedNum = "১," + formattedNum.substring(1);
+            formattedNum = "1," + formattedNum.substring(1);
         }
         
         element.innerText = formattedNum + (isPercentage ? "%" : "");
     }, speed);
 }
 
-   // লোডিং স্ক্রিন সরানোর কোড
 window.addEventListener('load', function() {
     setTimeout(function() {
         let preloader = document.getElementById('cyber-preloader');
         if (preloader) {
             preloader.style.display = 'none';
         }
-    }, 2500); // 2.5 সেকেন্ড পর লোডিং স্ক্রিন সরে যাবে
+    }, 2500); 
 });
 
 </script>
-<!-- হাই-লেভেল সাইবারনেটিক HUD ঘড়ি -->
+
+<!-- হাই-লেভেল সাইবারনেটিক HUD ঘড়ি -->
 <div class="hud-clock-wrapper">
-    <!-- ওপরের অংশ: সিস্টেম স্ট্যাটাস আর রকেটের মতো চলা মিলি-সেকেন্ড -->
     <div class="hud-top-dec">
         <div><span class="hud-dot"></span> SYSTEM.ONLINE</div>
-        <div class="hud-ms-container">MS: <span id="hud-msec" class="fast-ms">০০০</span></div>
+        <div class="hud-ms-container">MS: <span id="hud-msec" class="fast-ms">000</span></div>
     </div>
     
-    <!-- মাঝের অংশ: আসল সময় -->
     <div class="hud-time-display">
-        <span id="hud-hr">০০</span><span class="hud-blink">:</span><span id="hud-min">০০</span><span class="hud-blink">:</span><span id="hud-sec" class="hud-sec-text">০০</span>
+        <span id="hud-hr">00</span><span class="hud-blink">:</span><span id="hud-min">00</span><span class="hud-blink">:</span><span id="hud-sec" class="hud-sec-text">00</span>
         <span id="hud-ampm" class="hud-ampm-text">AM</span>
     </div>
     
-    <!-- প্রোগ্রেস বার: যেটা সেকেন্ডের সাথে সাথে এগোবে -->
     <div class="hud-sec-track">
         <div id="hud-sec-fill" class="hud-sec-fill"></div>
     </div>
     
-    <!-- নিচের অংশ: তারিখ -->
-    <div id="hud-date" class="hud-date-display">তারিখ লোড হচ্ছে...</div>
+    <div id="hud-date" class="hud-date-display">Date Loading...</div>
 </div>
-<!-- সাউন্ড টেস্ট করার সিক্রেট বাটন -->
-<button onclick="testJarvis()" style="position: fixed; top: 20px; right: 20px; z-index: 99999; padding: 10px 15px; background: #00ffcc; color: black; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 0 10px #00ffcc;">
-    সাউন্ড টেস্ট
-</button>
 
-<script>
-function testJarvis() {
-    let speech = new SpeechSynthesisUtterance("রুদ্র স্যার, সিস্টেম একদম ঠিকঠাক কাজ করছে!");
-    speech.lang = 'bn-IN'; // বাংলা ভাষা
-    speech.rate = 0.9;
-    window.speechSynthesis.speak(speech);
-}
-</script>
-    
 </body>
 </html>
