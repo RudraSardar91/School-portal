@@ -171,12 +171,12 @@ function loadSavedStudents() {
             // নতুন অ্যাড করা স্টুডেন্টগুলো ওপরের দিকে দেখানোর জন্য
             studentsArray.reverse().forEach(function(student) {
                 let newRow = table.insertRow(0);
-                newRow.innerHTML = `<td>#ST-2026-NEW</td><td style="color: #3b82f6; font-weight: bold;">${student.studentName}</td><td>${student.studentSubject}</td><td><button class="btn-delete" onclick="deleteStudent('${student.id}')"><i class="fa-solid fa-trash"></i></button></td>`;
+                // এখান থেকে নীল রঙের স্টাইলটা সরিয়ে দেওয়া হয়েছে, এখন সব সাধারণ কালারে আসবে
+                newRow.innerHTML = `<td>#ST-2026-NEW</td><td>${student.studentName}</td><td>${student.studentSubject}</td><td><button class="btn-delete" onclick="deleteStudent('${student.id}')"><i class="fa-solid fa-trash"></i></button></td>`;
             });
         }
     });
 }
-
 // পেজ লোড হলেই ক্লাউড ডেটাবেস চেক করবে
 window.addEventListener('load', loadSavedStudents);
 
