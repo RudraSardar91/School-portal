@@ -1,5 +1,23 @@
-// ১২৪০ জন ছাত্রছাত্রীর ডেটাবেস তৈরি করার লুপ (ইংরেজিতে)
-window.onload = function() {
+// ==========================================
+// FIREBASE CLOUD DATABASE SETUP (Rudra Admin)
+// ==========================================
+const firebaseConfig = {
+    apiKey: "AIzaSyCMkOWz5XfmhsHp48wOhvgj_0v0b700DG8",
+    authDomain: "admin-portal-b7c76.firebaseapp.com",
+    databaseURL: "https://admin-portal-b7c76-default-rtdb.firebaseio.com",
+    projectId: "admin-portal-b7c76",
+    storageBucket: "admin-portal-b7c76.firebasestorage.app",
+    messagingSenderId: "23197614932",
+    appId: "1:23197614932:web:bf531dbb7c51ae3281fec1"
+};
+
+// ফায়ারবেস ক্লাউড ইঞ্জিন চালু করা হলো
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+// ==========================================
+
+// ১২৪০ জন ছাত্রছাত্রীর ডামি ডেটাবেস তৈরি করার লুপ
+window.addEventListener('load', function() {
     const firstNamesM = ["অয়ন", "রাহুল", "সায়ন", "বিকাশ", "কৌশিক", "সুমন", "দেবরাজ", "রোহিত", "মনোজ", "আরিফ", "সৌরভ", "বিশাল", "অক্ষয়", "শুভম", "তনয়", "প্রতীক", "গৌরব", "রণিত", "বিক্রম", "ইমরান", "সুকান্ত", "দীপঙ্কর", "মন্টু", "সাগর", "অমিত", "সমীর", "অরিন্দম"];
     const firstNamesF = ["শ্রেয়া", "রিতিকা", "অদিতি", "সুস্মিতা", "নবনীতা", "পূজা", "অঞ্জলি", "সুনীতা", "রেশমি", "দিশা", "রিয়া", "নেহা", "ইশিতা", "বৃষ্টি", "সঞ্জনা", "পাপিয়া", "শ্রেয়সী", "জলি", "ফারহানা", "লিপি", "রীতা", "অনিমা", "প্রিয়া", "তানিয়া", "স্বাতী"];
     const lastNamesList = ["মুখার্জী", "দাস", "সেন", "বোস", "কর্মকার", "মিশ্র", "পাত্র", "রায়", "সাহা", "হালদার", "ঘোষ", "চক্রবর্তী", "মল্লিক", "পাসোয়ান", "বিশ্বাস", "বাউড়ি", "প্রামাণিক", "খাতুন", "সেখ", "সেনগুপ্ত", "পাল", "মন্ডল", "গুপ্তা", "শর্মা", "সিং", "গুহ", "মিত্র", "দে", "সরকার", "আলী", "সর্দার"];
@@ -24,7 +42,7 @@ window.onload = function() {
     if (dbElement) {
         dbElement.innerHTML = allStudentsHTML;
     }
-};
+});
 
 function exportTableToExcel(tableID, filename = ''){
     var downloadLink;
@@ -76,8 +94,7 @@ function startLogin() {
             setTimeout(() => { animateCounter('main-student', 1240, false); }, 100); 
             setTimeout(() => { animateCounter('attendance-counter', 92, true); }, 300);
             
-            // লগইন হওয়ার পর চার্ট রেন্ডার হবে
-            renderChart();
+            renderChart(); // লগইন হওয়ার পর চার্ট রেন্ডার হবে
             
         }, 1500);
     } else {
@@ -106,50 +123,81 @@ function changeTheme(themeName) {
 function openModal() { document.getElementById('studentModal').style.display = 'flex'; }
 function closeModal() { document.getElementById('studentModal').style.display = 'none'; }
 
+
+// ==========================================
+// ১. ক্লাউডে নতুন স্টুডেন্ট সেভ করা (ফায়ারবেস রিয়েল-টাইম)
+// ==========================================
 function saveStudent() {
     let name = document.getElementById('studentName').value;
     let subject = document.getElementById('studentSubject').value;
     if (name.trim() === "") { alert("দয়া করে স্টুডেন্টের নাম লিখুন!"); return; }
 
-    let table = document.getElementById('studentTableBody');
-    let newRow = table.insertRow(0);
-    newRow.innerHTML = `<td>#ST-2026-NEW</td><td>${name}</td><td>${subject}</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td>`;
-
-    let students = JSON.parse(localStorage.getItem("studentsDatabase")) || [];
-    
-    let newStudentData = {
+    // ডেটা সরাসরি গুগলের সার্ভারে পাঠানো হচ্ছে
+    let newStudentRef = database.ref('admissions_2026').push();
+    newStudentRef.set({
         studentName: name,
-        studentSubject: subject
-    };
-    
-    students.unshift(newStudentData);
-    localStorage.setItem("studentsDatabase", JSON.stringify(students));
+        studentSubject: subject,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+    });
 
     document.getElementById('studentName').value = "";
     closeModal();
 }
 
+// ==========================================
+// ২. ক্লাউড থেকে রিয়েল-টাইমে ডেটা পড়া (সব ফোনে সিঙ্ক হবে)
+// ==========================================
 function loadSavedStudents() {
-    let students = JSON.parse(localStorage.getItem("studentsDatabase")) || [];
     let table = document.getElementById('studentTableBody');
     if(!table) return;
-    
-    students.slice().reverse().forEach(function(student) {
-        let newRow = table.insertRow(0);
-        newRow.innerHTML = `<td>#ST-2026-NEW</td><td>${student.studentName}</td><td>${student.studentSubject}</td><td><button class="btn-delete" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button></td>`;
+
+    // ক্লাউড ডেটাবেসে পরিবর্তন হলেই এই ফাংশন নিজে থেকে চলবে
+    database.ref('admissions_2026').on('value', function(snapshot) {
+        
+        // ডিফল্ট দুটো ডামি স্টুডেন্ট যাতে ডিলিট না হয়ে যায়
+        let defaultRows = `
+            <tr><td>#ST-2026-01</td><td>অয়ন মুখার্জী</td><td>একাদশ (বিজ্ঞান)</td><td><button class="btn-delete" onclick="deleteStudent('default1')"><i class="fa-solid fa-trash"></i></button></td></tr>
+            <tr><td>#ST-2026-02</td><td>শ্রেয়া দাস</td><td>একাদশ (কলা)</td><td><button class="btn-delete" onclick="deleteStudent('default2')"><i class="fa-solid fa-trash"></i></button></td></tr>
+        `;
+        table.innerHTML = defaultRows;
+        
+        let data = snapshot.val();
+        if(data) {
+            let studentsArray = Object.keys(data).map(key => ({
+                id: key,
+                ...data[key]
+            }));
+            
+            // নতুন অ্যাড করা স্টুডেন্টগুলো ওপরের দিকে দেখানোর জন্য
+            studentsArray.reverse().forEach(function(student) {
+                let newRow = table.insertRow(0);
+                newRow.innerHTML = `<td>#ST-2026-NEW</td><td style="color: #3b82f6; font-weight: bold;">${student.studentName}</td><td>${student.studentSubject}</td><td><button class="btn-delete" onclick="deleteStudent('${student.id}')"><i class="fa-solid fa-trash"></i></button></td>`;
+            });
+        }
     });
 }
 
+// পেজ লোড হলেই ক্লাউড ডেটাবেস চেক করবে
 window.addEventListener('load', loadSavedStudents);
 
-function deleteStudent(button) {
-    if (confirm("আপনি কি সত্যিই এই ডেটা ডিলিট করতে চান?")) {
-        let row = button.parentNode.parentNode;
-        row.parentNode.removeChild(row);
+// ==========================================
+// ৩. ক্লাউড থেকে ডেটা ডিলিট করা
+// ==========================================
+function deleteStudent(id) {
+    if (confirm("আপনি কি সত্যিই এই ডেটা ডিলিট করতে চান? (সব ডিভাইস থেকে মুছে যাবে)")) {
+        if(id === 'default1' || id === 'default2') {
+            alert("এই ডিফল্ট ডেটা ডিলিট করা যাবে না। নতুন অ্যাড করা ডেটা ডিলিট করে দেখুন।");
+            return;
+        }
+        // ফায়ারবেস থেকে ডেটা মুছে ফেলা হচ্ছে
+        database.ref('admissions_2026/' + id).remove();
     }
 }
 
-// মারাত্মক এডভান্স ডুয়েল-কোর ইঞ্জিন (ভয়েস এআই সহ - ইংরেজি নম্বর)
+
+// ==========================================
+// মারাত্মক এডভান্স ডুয়েল-কোর ইঞ্জিন (ভয়েস এআই সহ)
+// ==========================================
 let lastSpokenTime = ""; 
 
 function startHUDClock() {
@@ -246,7 +294,7 @@ window.addEventListener('load', function() {
     }, 2500); 
 });
 
-// লাইভ চার্ট তৈরি করার ফাংশন (১২ মাসের ডেটা সহ)
+// লাইভ ডেটা চার্ট রেন্ডারিং (১২ মাস)
 function renderChart() {
     const canvas = document.getElementById('feesChart');
     if(!canvas) return;
@@ -255,11 +303,9 @@ function renderChart() {
     new Chart(ctx, {
         type: 'bar',
         data: {
-            // ১২ মাসের নাম
             labels: ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টে', 'অক্টো', 'নভে', 'ডিসে'],
             datasets: [{
                 label: 'কালেকশন (৳)',
-                // ১২ মাসের আলাদা আলাদা টাকার অঙ্ক
                 data: [15000, 22000, 18000, 25400, 21000, 28000, 19500, 23000, 27000, 20000, 24500, 30000],
                 backgroundColor: '#3b82f6',
                 borderRadius: 6,
@@ -268,7 +314,7 @@ function renderChart() {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // এই লাইনটাই চার্টকে চিপটে ছোট রাখবে
+            maintainAspectRatio: false,
             plugins: {
                 legend: { display: false }
             },
