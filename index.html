@@ -1,7 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
+
+    <!-- Lottie Animation Engine -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -39,12 +42,25 @@
 
     <!-- ল্যান্ডিং পেজ (লগইন) -->
     <div id="landing" class="page-container active">
-        <div class="login-box">
-            <i class="fa-solid fa-lock" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
-            <h1>এডমিন লগইন</h1>
-            <p>নিরাপদ পোর্টালে প্রবেশ করতে আপনার এডমিন নম্বর দিন</p>
-            <input type="password" id="adminPassword" class="login-input" placeholder="এডমিন আইডি বা নম্বর দিন">
-            <button class="btn-enter" onclick="startLogin()"><i class="fa-solid fa-right-to-bracket"></i> Enter</button>
+        <!-- নতুন প্রফেশনাল লগইন ইন্টারফেস -->
+        <div class="login-box" id="loginContainer">
+            <div id="input-section">
+                <h2 style="margin-bottom: 5px; color: #fff;">Secure Access</h2>
+                <p style="color: #888; font-size: 14px; margin-bottom: 25px;">Enter admin password to access portal</p>
+                
+                <input type="password" id="adminPassword" placeholder="Password..." autocomplete="off">
+                <button onclick="startLogin()" class="btn-neon" style="width: 100%; margin-top: 15px; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Login</button>
+            </div>
+
+            <!-- ভেরিফাইং অ্যানিমেশন (শুরুতে লুকানো থাকবে) -->
+            <div id="verify-section" style="display: none;">
+                <h3 style="color: #fff; margin-bottom: 5px;">Verifying...</h3>
+                <p style="color: #888; font-size: 12px; margin-bottom: 25px;">Securely checking your credentials.</p>
+                
+                <div class="circular-progress">
+                    <span class="progress-value">0%</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -68,9 +84,15 @@
             </div>
 
             <div class="main-panel">
-                <div class="topbar">
+               <div class="topbar">
                     <h3 style="color: black; text-shadow: 1px 1px 2px white; margin-right: auto;">কোটালপুর মধুসূদন হাই স্কুল</h3>
                     
+                    <!-- নতুন ইউজার লগইন ও রেজিস্টার বাটন -->
+                    <div class="user-auth-buttons" style="margin-right: 20px; display: flex; gap: 10px;">
+                        <button class="btn-auth-outline" onclick="openUserAuth('login')">লগইন</button>
+                        <button class="btn-auth-fill" onclick="openUserAuth('register')">রেজিস্টার</button>
+                    </div>
+
                     <div class="search-bar" style="margin-right: 30px;">
                         <i class="fa-solid fa-magnifying-glass" style="color: #94a3b8;"></i>
                         <input type="text" id="searchInput" onkeyup="searchStudent()" placeholder="স্টুডেন্ট আইডি বা নাম খুঁজুন...">
@@ -241,7 +263,7 @@
                     <!-- প্যানেল ৫: সেটিংস ও থিম -->
                     <div id="settingsPanel" class="panel-section">
                         <h2 style="margin-bottom: 10px; color: var(--heading-color); font-size: 24px;"><i class="fa-solid fa-palette"></i> সিস্টেম থিম সেটিংস</h2>
-                        <p style="color: var(--table-text); margin-bottom: 30px;">আপনার পছন্দ অনুযায়ী ওয়েবসাইটের লুক পরিবর্তন করুন।</p>
+                        <p style="color: var(--table-text); margin-bottom: 30px;">আপনার পছন্দ অনুযায়ী ওয়েবসাইটের লুক পরিবর্তন করুন.</p>
                         <div class="theme-grid">
                             <div class="theme-card" onclick="changeTheme('light')"><i class="fa-regular fa-sun" style="color: #f59e0b;"></i><h3>লাইট মোড</h3></div>
                             <div class="theme-card" onclick="changeTheme('dark')"><i class="fa-solid fa-moon" style="color: #6366f1;"></i><h3>ডার্ক মোড</h3></div>
@@ -297,5 +319,40 @@
 
     <!-- তোমার আলাদা করা JS ফাইল -->
     <script src="script.js"></script>
+
+    <!-- ইউজার লগইন ও রেজিস্টার পপ-আপ ফর্ম -->
+    <div id="userAuthModal" class="auth-overlay" style="display: none;">
+        <div class="auth-box">
+            <i class="fa-solid fa-xmark close-auth" onclick="closeUserAuth()"></i>
+            
+            <!-- লগইন ফর্ম -->
+            <div id="userLoginForm">
+                <h2 style="color: #3b82f6; margin-bottom: 20px;"><i class="fa-solid fa-right-to-bracket"></i> ইউজার লগইন</h2>
+                <input type="text" id="lPhone" class="auth-input" placeholder="আপনার ফোন নম্বর">
+                <input type="password" id="lPass" class="auth-input" placeholder="পাসওয়ার্ড">
+                <button class="auth-btn" onclick="processUserLogin()">লগইন করুন</button>
+                <p class="auth-switch-text">অ্যাকাউন্ট নেই? <span onclick="switchAuthView('register')">নতুন রেজিস্টার করুন</span></p>
+            </div>
+
+            <!-- সাকসেস অ্যানিমেশন (শুরুতে লুকানো থাকবে) -->
+            <div id="successAnimation" style="display: none; text-align: center;">
+                <!-- গুগলের নিজস্ব সেলিব্রেশন অ্যানিমেশন -->
+                <lottie-player src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f389/lottie.json" background="transparent" speed="1" style="width: 200px; height: 200px; margin: 0 auto;" loop autoplay></lottie-player>
+                <h2 id="successText" style="color: #22c55e; margin-top: 10px; text-shadow: 0 0 15px rgba(34, 197, 94, 0.6);">সাকসেসফুল!</h2>
+                <p style="color: #888; font-size: 14px;">ড্যাশবোর্ড লোড হচ্ছে...</p>
+            </div>
+
+            <!-- রেজিস্টার ফর্ম (Visme Bag Animation) -->
+            <div id="userRegisterForm" style="display: none; width: 100%; height: 550px; position: relative;">
+                
+                <!-- তোমার Visme ফর্মের আসল কোড -->
+                <div class="visme_d" data-title="Business Registration Form" data-url="y7poppwx-business-registration-form" data-domain="forms" data-full-page="false" data-min-height="500px" data-form-id="y7poppwx"></div>
+                <script src="https://static-bundles.visme.co/forms/vismeforms-embed.js"></script>
+                
+                <p class="auth-switch-text" style="text-align: center; margin-top: 10px;">আগে থেকেই অ্যাকাউন্ট আছে? <span onclick="switchAuthView('login')">লগইন করুন</span></p>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

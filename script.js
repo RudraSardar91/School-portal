@@ -80,25 +80,54 @@ function searchStudent() {
     }
 }
 
+// ==========================================
+// নতুন Secure Vault অ্যানিমেশন সহ লগইন সিস্টেম
+// ==========================================
 function startLogin() {
     let pass = document.getElementById("adminPassword").value;
+    
     if (pass === "9163966795") {
-        document.getElementById('loader').style.display = 'flex';
-        
-        setTimeout(() => {
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('landing').classList.remove('active');
-            document.getElementById('dashboard').classList.add('active');
-            document.getElementById('adminPassword').value = "";
-            
-            setTimeout(() => { animateCounter('main-student', 1240, false); }, 100); 
-            setTimeout(() => { animateCounter('attendance-counter', 92, true); }, 300);
-            
-            renderChart(); // লগইন হওয়ার পর চার্ট রেন্ডার হবে
-            
-        }, 1500);
+        // ১. ইনপুট বক্স লুকিয়ে Verifying অপশন চালু করা
+        document.getElementById('input-section').style.display = 'none';
+        document.getElementById('verify-section').style.display = 'block';
+
+        let progressValue = document.querySelector('.progress-value');
+        let circularProgress = document.querySelector('.circular-progress');
+
+        let progressStartValue = 0;
+        let progressEndValue = 100;
+        let speed = 20; // কত স্পিডে গোলটা ঘুরবে
+
+        // ২. প্রোগ্রেস বার ঘোরানোর লুপ
+        let progress = setInterval(() => {
+            progressStartValue++;
+            progressValue.textContent = `${progressStartValue}%`;
+            circularProgress.style.background = `conic-gradient(#ff00ff ${progressStartValue * 3.6}deg, rgba(255,255,255,0.05) 0deg)`;
+
+            // ৩. ১০০% হলে ড্যাশবোর্ডে ঢোকা
+            if (progressStartValue == progressEndValue) {
+                clearInterval(progress);
+                
+                setTimeout(() => {
+                    document.getElementById('landing').classList.remove('active');
+                    document.getElementById('dashboard').classList.add('active');
+                    document.getElementById('adminPassword').value = "";
+                    
+                    // পরে লগ আউট করলে যাতে আবার প্রথম থেকে দেখায় তার জন্য রিসেট
+                    document.getElementById('input-section').style.display = 'block';
+                    document.getElementById('verify-section').style.display = 'none';
+                    progressValue.textContent = "0%";
+                    circularProgress.style.background = `conic-gradient(#ff00ff 0deg, rgba(255,255,255,0.05) 0deg)`;
+
+                    setTimeout(() => { animateCounter('main-student', 1240, false); }, 100); 
+                    setTimeout(() => { animateCounter('attendance-counter', 92, true); }, 300);
+                    renderChart(); 
+                }, 500); // ১০০% হওয়ার পর আধ সেকেন্ড ওয়েট করবে
+            }
+        }, speed);
+
     } else {
-        alert("ভুল এডমিন আইডি! দয়া করে সঠিক নম্বরটি দিন।");
+        alert("ভুল এডমিন পাসওয়ার্ড! দয়া করে সঠিক নম্বরটি দিন।");
     }
 }
 
@@ -336,3 +365,120 @@ function renderChart() {
         }
     });
 }
+
+// ==========================================
+// ইউজার লগইন ও রেজিস্টার (OTP Simulation Engine)
+// ==========================================
+let generatedOTP = ""; // ডেমো ওটিপি স্টোর করার জন্য
+
+function openUserAuth(type) {
+    document.getElementById('userAuthModal').style.display = 'flex';
+    switchAuthView(type);
+}
+
+function closeUserAuth() {
+    document.getElementById('userAuthModal').style.display = 'none';
+    // ফর্ম রিসেট করা
+    document.getElementById('rName').value = "";
+    document.getElementById('rPhone').value = "";
+    document.getElementById('rPass').value = "";
+    document.getElementById('rOtp').value = "";
+    document.getElementById('otpInputArea').style.display = 'none';
+    document.getElementById('btnSendOtp').style.display = 'block';
+    document.getElementById('btnVerifyOtp').style.display = 'none';
+}
+
+function switchAuthView(type) {
+    if (type === 'login') {
+        document.getElementById('userLoginForm').style.display = 'block';
+        document.getElementById('userRegisterForm').style.display = 'none';
+    } else {
+        document.getElementById('userLoginForm').style.display = 'none';
+        document.getElementById('userRegisterForm').style.display = 'block';
+    }
+}
+
+function sendSimulatedOTP() {
+    let phone = document.getElementById('rPhone').value;
+    let name = document.getElementById('rName').value;
+    let pass = document.getElementById('rPass').value;
+
+    if(name === "" || phone === "" || pass === "") {
+        alert("দয়া করে নাম, ফোন নম্বর এবং পাসওয়ার্ড পূরণ করুন!");
+        return;
+    }
+    
+    if(phone.length < 10) {
+        alert("সঠিক 10-ডিজিটের ফোন নম্বর দিন!");
+        return;
+    }
+
+    // 4-ডিজিটের র‍্যান্ডম OTP তৈরি করা
+    generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+    
+    // পোর্টফোলিও দেখানোর জন্য ফোনে SMS আসার মতো অ্যালার্ট
+    alert(`[Rudra 91 SMS Service]\nআপনার ফোন নম্বর ${phone} এর ভেরিফিকেশন কোড (OTP) হলো: ${generatedOTP}\n\nদয়া করে এটি কাউকে শেয়ার করবেন না।`);
+
+    // ফর্মের ভিউ চেঞ্জ করা
+    document.getElementById('otpInputArea').style.display = 'block';
+    document.getElementById('btnSendOtp').style.display = 'none';
+    document.getElementById('btnVerifyOtp').style.display = 'block';
+}
+
+function verifyAndRegister() {
+    let enteredOtp = document.getElementById('rOtp').value;
+    
+    if (enteredOtp === generatedOTP) {
+        let phone = document.getElementById('rPhone').value;
+        let pass = document.getElementById('rPass').value;
+        let name = document.getElementById('rName').value;
+        
+        localStorage.setItem('userPhone', phone);
+        localStorage.setItem('userPass', pass);
+        localStorage.setItem('userName', name);
+
+        // রেজিস্টার ফর্ম লুকিয়ে সাকসেস অ্যানিমেশন দেখানো
+        document.getElementById('userRegisterForm').style.display = 'none';
+        document.getElementById('successAnimation').style.display = 'block';
+        document.getElementById('successText').innerText = "অ্যাকাউন্ট তৈরি হয়েছে!";
+
+        // ৩ সেকেন্ড অ্যানিমেশন চলার পর লগইন ফর্মে নিয়ে যাবে
+        setTimeout(() => {
+            document.getElementById('successAnimation').style.display = 'none';
+            switchAuthView('login');
+        }, 3000);
+
+    } else {
+        alert("❌ ভুল OTP! দয়া করে সঠিক কোডটি দিন।");
+    }
+}
+
+function processUserLogin() {
+    let inputPhone = document.getElementById('lPhone').value;
+    let inputPass = document.getElementById('lPass').value;
+
+    let savedPhone = localStorage.getItem('userPhone');
+    let savedPass = localStorage.getItem('userPass');
+
+    if (inputPhone === savedPhone && inputPass === savedPass) {
+        let savedName = localStorage.getItem('userName');
+        
+        // লগইন ফর্ম লুকিয়ে সাকসেস অ্যানিমেশন দেখানো
+        document.getElementById('userLoginForm').style.display = 'none';
+        document.getElementById('successAnimation').style.display = 'block';
+        document.getElementById('successText').innerText = `স্বাগতম ${savedName}!`;
+
+        // ৩ সেকেন্ড পুতুলের অ্যানিমেশন চলার পর ড্যাশবোর্ড খুলবে
+        setTimeout(() => {
+            closeUserAuth(); // পপ-আপ বন্ধ হবে
+            document.getElementById('successAnimation').style.display = 'none';
+            document.getElementById('userLoginForm').style.display = 'block'; // পরের বারের জন্য রিসেট
+        }, 3000);
+
+    } else {
+        alert("❌ ভুল ফোন নম্বর বা পাসওয়ার্ড! আপনি যে পাসওয়ার্ড দিয়ে রেজিস্টার করেছিলেন, সেটাই দিন।");
+    }
+}
+    
+   // পোর্টফোলিওর জন্য একটি ডেমো সাকসেস মেসেজ
+alert(`স্বাগতম! নম্বর ${phone} দ্বারা আপনি সফলভাবে পোর্টালে লগইন করেছেন। (এটি পোর্টফোলিও ডেমো)`);
