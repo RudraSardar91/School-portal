@@ -128,7 +128,7 @@
                             <div class="chart-container" style="background: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
                                 <h3 style="color: var(--heading-color); margin-bottom: 20px; font-size: 18px;">মাসিক ফিজ কালেকশন (2026)</h3>
                                 
-                                <!-- এই ডিভটা চার্টকে কোনোভাবেই বড় হতে দেবে না -->
+                                <!-- এই ডিভটা চার্টকে কোনোভাবেই বড় হতে দেবে্বা না -->
                                 <div style="position: relative; height: 250px; width: 100%;">
                                     <canvas id="feesChart"></canvas>
                                 </div>
@@ -149,6 +149,35 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- নতুন ভিডিও সেকশন (তোমার নিজের লোকাল ভিডিওর জন্য) -->
+                        <div class="video-container" style="background: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                            <h3 style="color: var(--heading-color); margin-bottom: 20px; font-size: 18px; display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-brands fa-youtube" style="color: #ef4444; font-size: 24px;"></i> 
+                                সাম্প্রতিক কার্যক্রম (ভিডিও গ্যালারি)
+                            </h3>
+                            
+                            <div class="video-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                                
+                                <!-- প্রথম লোকাল ভিডিও -->
+                                <div class="video-card" style="background: #000; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                                    <!-- controls অ্যাড করা হলো সাউন্ডের জন্য এবং object-fit: contain করা হলো -->
+                                    <video width="100%" height="100%" autoplay loop muted controls playsinline style="object-fit: contain; position: absolute; top: 0; left: 0;">
+                                        <source src="video1.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+
+                                <!-- দ্বিতীয় লোকাল ভিডিও -->
+                                <div class="video-card" style="background: #000; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                                    <video width="100%" height="100%" autoplay loop muted controls playsinline style="object-fit: contain; position: absolute; top: 0; left: 0;">
+                                        <source src="video2.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- ভিডিও সেকশন শেষ -->
+
                     </div>
 
                     <!-- প্যানেল ২: ছাত্রছাত্রী ডেটাবেস -->
@@ -175,6 +204,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        
                         
                         <div style="padding: 15px; text-align: center; color: var(--table-text); background: var(--card-bg); border-top: 1px solid var(--border-color); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                             <span>দেখাচ্ছে 1 থেকে 1,240 জন (সম্পূর্ণ ডেটাবেস)</span>
